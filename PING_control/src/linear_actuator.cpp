@@ -1,21 +1,43 @@
-#include "linear_actuator.hpp"
+#include "Linear_actuator.hpp"
 
-linear_actuator::linear_actuator() : AccelStepper(AccelStepper::DRIVER)
-{
-    _end_stop_pin = -1;
-}
 
-linear_actuator::linear_actuator(int dir_pin, int step_pin, int end_stop_pin) : AccelStepper(AccelStepper::DRIVER, dir_pin, step_pin)
+
+Linear_actuator::Linear_actuator(int dir_pin, int step_pin, int end_stop_pin)
 {
+    stepper = AccelStepper(AccelStepper::DRIVER, dir_pin, step_pin);
     _end_stop_pin = end_stop_pin;
+    _check_for_falling_edge = true;
     pinMode(_end_stop_pin, INPUT_PULLUP);
+
 }
 
 
-void  linear_actuator::stopEndStop()
+
+void Linear_actuator::run()
 {
-    //force current speed to 0 and reset the position to 0
-    setCurrentPosition(0);
-    setSpeed(0);
-    runSpeed();
+    stepper.run();
+    if(!_check_for_falling_edge)
+      return;
+    if(stepper.speed()<=0)
+      return;
+
+    //check if the endstop is reached
+    //bool end_stop_state = (*portInputRegister(digitalPinToPort(_end_stop_pin)) & _pin_mask);
+    bool end_stop_state = digitalRead(_end_stop_pin);
+    if(!end_stop_state ) 
+    {
+        //_check_for_falling_edge = false;
+        stepper.setSpeed(0);
+        stepper.runSpeed();
+        setCurrentPosition(MAX_POSITION);// parceque l'endstop est au bout de la course
+    }
+}
+
+void Linear_actuator::moveTo(float absolute_mm)
+{
+    if(absolute_mm > MAX_POSITION)
+        absolute_mm = MAX_POSITION;
+    else if(absolute_mm < 0)
+        absolute_mm = 0;
+    stepper.moveTo((long)(absolute_mm * STEP_PER_MM));
 }
