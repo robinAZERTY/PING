@@ -27,3 +27,6 @@ Cette branche contient la version complète du jeu PONG à quatre joueurs, combi
 4.  Sur la page de contrôle du gardien, utilisez les commandes à l'écran pour activer et déplacer la surface de rebond de votre gardien.
 5.  Jouez au jeu en essayant de ne pas prendre de but. Chaque fois qu'un joueur encaisse un but, il perd une vie.
 6.  Le premier joueur à perdre toutes ses vies perd la partie.
+
+Pour le fonctionnement multi-tâche : https://www.aranacorp.com/fr/programme-multitache-avec-esp32-et-freertos/
+Pour le fonctionnement multi-coeurs : https://randomnerdtutorials.com/esp32-dual-core-arduino-ide/
