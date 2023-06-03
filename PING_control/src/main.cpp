@@ -1,9 +1,9 @@
 #include <Arduino.h>
-#include "percutor.hpp"
+#include "solenoid.hpp"
 
 float power = 0.0;
-percutor p1(4, &power);
-unsigned long time = 0;
+solenoid s1(4, &power);
+unsigned long t = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -28,6 +28,6 @@ void loop() {
     }
   }
 
-  time = millis();
-  p1.update(time);
+  t = millis();
+  s1.update(t);
 }
