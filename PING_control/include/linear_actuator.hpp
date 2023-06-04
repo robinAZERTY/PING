@@ -23,7 +23,7 @@ public:
     Linear_actuator(){};
     Linear_actuator(int dir_pin, int step_pin, int end_stop_pin);
     ~Linear_actuator(){};
-    void reset_endstop(){_check_for_falling_edge = true;}; // when we want to check for a new falling edge
+    void calibrate(); // when we want to check for a new falling edge
     void moveTo(float absolute_mm);
     void run();
     void move(float relative_mm){ stepper.move((long)(relative_mm * STEP_PER_MM));}
@@ -38,12 +38,14 @@ public:
     float currentPosition() { return stepper.currentPosition() / STEP_PER_MM;}
     void setCurrentPosition(float position_mm) { stepper.setCurrentPosition(position_mm * STEP_PER_MM);}
     void runToNewPosition(float position_mm) { stepper.runToNewPosition(position_mm * STEP_PER_MM);}
+
+
     
 private:
     AccelStepper stepper;
-    static constexpr float STEP_PER_MM = (float)STEPS_PER_REVOLUTION * MICROSTEP / BELT_PITCH / POULLEY_TEETH;
+    static constexpr float STEP_PER_MM = (float)STEPS_PER_REVOLUTION * MICROSTEP / BELT_PITCH / POULLEY_TEETH,CALIBRATION_SPEED = 100.0;
     int _end_stop_pin;
-    bool _check_for_falling_edge;
+    bool _calibrated;
 };
 
 #endif
