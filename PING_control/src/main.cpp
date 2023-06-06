@@ -3,7 +3,7 @@
 
 Player player1(DIR_PIN_1, STEP_PIN_1, END_STOP_PIN_1, SOLEOID_PIN_1);
 
-void Task1func(void * pvParameters)
+void Task1func()
 {
   // using the serial monitor to control the player
   //  on press left arrow key -> move left
@@ -57,7 +57,7 @@ void Task1func(void * pvParameters)
   }
 }
 
-void Task2func(void * pvParameters)
+void Task2func()
 {
   player1.play();
 }
@@ -70,26 +70,13 @@ void setup()
   Serial.begin(115200);
 
   // use the 2 cores of the esp32
-  xTaskCreatePinnedToCore(
-      Task1func,   /* Function to implement the task */
-      "Task1", /* Name of the task */
-      10000,   /* Stack size in words */
-      NULL,    /* Task input parameter */
-      0,       /* Priority of the task */
-      NULL,    /* Task handle. */
-      0);      /* Core where the task should run */
+  
 
-  xTaskCreatePinnedToCore(
-      Task2func,   /* Function to implement the task */
-      "Task2", /* Name of the task */
-      10000,   /* Stack size in words */
-      NULL,    /* Task input parameter */
-      0,       /* Priority of the task */
-      NULL,    /* Task handle. */
-      1);      /* Core where the task should run */
+
 }
-
   
 void loop()
 {  
+Task1func();
+Task2func();
 }

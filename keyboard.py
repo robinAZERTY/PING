@@ -1,13 +1,12 @@
 # send all keyboard events to Arduino Serial port (115200 baud com 12)
 
 import serial
-import time
-import sys
 import pygame
 from pygame.locals import *
 
 # open serial port
-ser = serial.Serial('COM12', 115200, timeout=0)
+ser = serial.Serial('COM3', 115200, timeout=1)
+
 
 # initialize pygame 
 pygame.init()
@@ -24,5 +23,4 @@ while True:
             ser.write(to_send.encode()) 
             print(to_send)
             
-ser.close()
-            
+ser.close()  

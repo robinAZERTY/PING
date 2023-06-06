@@ -21,7 +21,7 @@ public:
     void play();
 
 private:
-    float _acceleration=5000.0, _speed=200.0;
+    float _acceleration=4000.0, _speed=800.0;
     Solenoid solenoid;
     Linear_actuator linear_actuator;
 };
