@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.getElementsByClassName('btn');
+            const startButton = document.getElementById('startButton');
+            const selectedPlayers = [];
+            // Récupérer les boutons de joueur
+            var btnUn = document.getElementById("btn-un");
+            var btnDeux = document.getElementById("btn-deux");
+            var btnTrois = document.getElementById("btn-trois");
+            var btnQuatre = document.getElementById("btn-quatre");
+
+            // Récupérer le formulaire et le bouton START
+            var startForm = document.getElementById("startForm");
+    
+            function buttonClicked(clickedButton) {
+                if (selectedPlayers.includes(clickedButton)) {
+                    alert("Ce joueur a déjà été pris !");
+                    startButton.disabled = true;
+                    location.reload(); // Rafraîchir la page
+                } 
+                else {
+                    for (let j = 0; j < buttons.length; j++) {
+                        if (buttons[j] !== clickedButton) {
+                            buttons[j].classList.add('gris');
+                            buttons[j].disabled = true;
+                        }
+                    }
+                    if (selectedPlayers.length > 0) {
+                        const previousButton = selectedPlayers.pop();
+                        previousButton.classList.remove('gris');
+                        previousButton.disabled = false;
+                    }
+    
+                    selectedPlayers.push(clickedButton);
+    
+                    startButton.disabled = false;
+                }
+            }
+    
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener('click', function() {
+                    const clickedButton = this;
+                    buttonClicked(clickedButton);
+                });
+            }
+
+            // Ajouter des écouteurs d'événements sur les boutons de joueur
+            btnUn.addEventListener("click", function() {
+                startForm.action = "page-joueur1.html";
+                startButton.disabled = false;
+            });
+
+            btnDeux.addEventListener("click", function() {
+                startForm.action = "page-joueur2.html";
+                startButton.disabled = false;
+            });
+
+            btnTrois.addEventListener("click", function() {
+                startForm.action = "page-joueur3.html";
+                startButton.disabled = false;
+            });
+
+            btnQuatre.addEventListener("click", function() {
+                startForm.action = "page-joueur4.html";
+                startButton.disabled = false;
+            });
+        });
+</script>
+    </script>
+</head>
+<body>
+    <header>
+        <nav role="navigation" class="nav">
+            <div id="menuToggle">
+              <input type="checkbox" />
+              <span></span>
+              <span></span>
+              <span></span>
+              <ul id="menu">
+                <a href="accueil.html"><li>Accueil</li></a>
+                <a href="histoire.html"><li>Histoire</li></a>
+                <a href="regles.html"><li>Règles</li></a>
+              </ul>
+            </div>
+          </nav>
+    </header>   
+    <main>
+        <h1>Bienvenue sur Ping !</h1>
+        <h2>Choix des joueurs :</h2>
+        <div class="choix-joueurs">
+            <button type="button" class="btn un" id="btn-un">Joueur 1</button>
+            <button type="button" class="btn deux" id="btn-deux">Joueur 2</button>
+            <button type="button" class="btn trois" id="btn-trois">Joueur 3</button>
+            <button type="button" class="btn quatre" id="btn-quatre">Joueur 4</button>
+        </div>
+    </main>
+    <footer>
+        <form id="startForm">  
+            <button type="submit" class="button pc" id="startButton" disabled>START</button> 
+        </form>  
+    </footer>
+</body>
+</html>
