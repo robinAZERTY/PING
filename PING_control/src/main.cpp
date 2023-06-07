@@ -1,8 +1,7 @@
 #include <Arduino.h>
-#include "Player.hpp"
+#include "Ping.hpp"
 
-Player player1(DIR_PIN_1, STEP_PIN_1, END_STOP_PIN_1, SOLEOID_PIN_1);
-
+PING the_ping;
 void Task1func()
 {
   // using the serial monitor to control the player
@@ -25,33 +24,33 @@ void Task1func()
     {
       if (ty == "768") // press
       {
-        player1.left();
-      }
+        the_ping.player1.left();
+        }
       else if (ty == "769") // release
       {
-        player1.stop();
+        the_ping.player1.stop();
       }
     }
     else if (key == "1073741903") // right arrow key
     {
       if (ty == "768") // press
       {
-        player1.right();
+        the_ping.player1.right();
       }
       else if (ty == "769") // release
       {
-        player1.stop();
+        the_ping.player1.stop();
       }
     }
     else if (key == "32") // space bar
     {
       if (ty == "768") // press
       {
-        player1.shoot();
+        the_ping.player1.shoot();
       }
       else if (ty == "769") // release
       {
-        player1.release();
+        the_ping.player1.release();
       }
     }
   }
@@ -59,7 +58,7 @@ void Task1func()
 
 void Task2func()
 {
-  player1.play();
+  the_ping.player1.play();
 }
 
 TaskHandle_t Task1, Task2;
@@ -77,6 +76,6 @@ void setup()
   
 void loop()
 {  
-Task1func();
+Task1func();//on regarde sur le port serie si on a recu des commandes et on execute les commandes
 Task2func();
 }

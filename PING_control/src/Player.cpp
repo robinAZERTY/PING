@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(int dir_pin, int step_pin, int end_stop_pin, int solenoid_pin)
+Player::Player(int dir_pin, int step_pin, int end_stop_pin, int solenoid_pin, int photodiod_pin)
 {
     solenoid = Solenoid(solenoid_pin);
     solenoid.setPower(255);
@@ -9,10 +9,30 @@ Player::Player(int dir_pin, int step_pin, int end_stop_pin, int solenoid_pin)
     linear_actuator = Linear_actuator(dir_pin, step_pin, end_stop_pin);
     linear_actuator.setMaxSpeed(_speed);
     linear_actuator.setAcceleration(_acceleration);
+    _photodiod_pin = photodiod_pin;
+    pinMode(_photodiod_pin, INPUT);
 }
 
 void Player::play()
 {
+    if (_waitting_for_throw_in)
+        return;
+
     linear_actuator.run();
     solenoid.run();
+}
+
+boolean Player::isBallIn()
+{
+    if (digitalRead(_photodiod_pin))// if the ball is not in the player
+        return false;
+
+    _waitting_for_throw_in = true;
+    return true;
+}
+
+void Player::throwIn()
+{
+    linear_actuator.moveTo(MAX_POSITION/2);
+    _waitting_for_throw_in = false;
 }

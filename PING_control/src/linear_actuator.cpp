@@ -5,7 +5,7 @@
 Linear_actuator::Linear_actuator(int dir_pin, int step_pin, int end_stop_pin) {
   stepper = AccelStepper(AccelStepper::DRIVER, dir_pin, step_pin);
   _end_stop_pin = end_stop_pin;
-  calibrate();
+  _calibrated = true;//don't calibrate at the beginning
   if (_end_stop_pin > 0)
     pinMode(_end_stop_pin, INPUT_PULLUP);
 }
