@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <ESPAsyncWebServer.h>
 //Udp Library
-#include <EspAsyncUDP.h>
+//#include <EspAsyncUDP.h>
 #include <SPIFFS.h>
 
 const char *ssid = "esp32";
@@ -18,14 +18,14 @@ const int push = 4;
 
 AsyncWebServer server(80);
 //Async Udp Server
-AsyncUDP udp;
+//AsyncUDP udp;
 
 // Request Handle for broadcasting message
-void handleRequest(AsyncWebServerRequest *request) {
-  String message = "Ceci est la requete Update";
-  udp.broadcastTo(message.c_str(), 1234); //Broadcast the message to all devices on the network
-  request->send(200, "text/plain", "Update sent");
-}
+// void handleRequest(AsyncWebServerRequest *request) {
+//   String message = "Ceci est la requete Update";
+//   udp.broadcastTo(message.c_str(), 1234); //Broadcast the message to all devices on the network
+//   request->send(200, "text/plain", "Update sent");
+// }
 
 void setup()
 {
@@ -132,7 +132,7 @@ void setup()
   });
 
   // Broadcast de la page
-  server.on("/start", HTTP_GET, handleRequest);
+  //server.on("/start", HTTP_GET, handleRequest);
 
 
   server.begin();

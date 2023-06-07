@@ -6,75 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
     <link rel="stylesheet" href="style.css" />
-    <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            const buttons = document.getElementsByClassName('btn');
-            const startButton = document.getElementById('startButton');
-            const selectedPlayers = [];
-            // Récupérer les boutons de joueur
-            var btnUn = document.getElementById("btn-un");
-            var btnDeux = document.getElementById("btn-deux");
-            var btnTrois = document.getElementById("btn-trois");
-            var btnQuatre = document.getElementById("btn-quatre");
-
-            // Récupérer le formulaire et le bouton START
-            var startForm = document.getElementById("startForm");
-    
-            function buttonClicked(clickedButton) {
-                if (selectedPlayers.includes(clickedButton)) {
-                    alert("Ce joueur a déjà été pris !");
-                    startButton.disabled = true;
-                    location.reload(); // Rafraîchir la page
-                } 
-                else {
-                    for (let j = 0; j < buttons.length; j++) {
-                        if (buttons[j] !== clickedButton) {
-                            buttons[j].classList.add('gris');
-                            buttons[j].disabled = true;
-                        }
-                    }
-                    if (selectedPlayers.length > 0) {
-                        const previousButton = selectedPlayers.pop();
-                        previousButton.classList.remove('gris');
-                        previousButton.disabled = false;
-                    }
-    
-                    selectedPlayers.push(clickedButton);
-    
-                    startButton.disabled = false;
-                }
-            }
-    
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].addEventListener('click', function() {
-                    const clickedButton = this;
-                    buttonClicked(clickedButton);
-                });
-            }
-
-            // Ajouter des écouteurs d'événements sur les boutons de joueur
-            btnUn.addEventListener("click", function() {
-                startForm.action = "game_page.html";
-                startButton.disabled = false;
-            });
-
-            btnDeux.addEventListener("click", function() {
-                startForm.action = "game_page2.html";
-                startButton.disabled = false;
-            });
-
-            btnTrois.addEventListener("click", function() {
-                startForm.action = "game_page3.html";
-                startButton.disabled = false;
-            });
-
-            btnQuatre.addEventListener("click", function() {
-                startForm.action = "game_page4.html";
-                startButton.disabled = false;
-            });
-        });
-    </script>
-    
+    <script type="text/javascript" src="script.js"></script>
 </head>
 <body>
     <header>
@@ -96,17 +28,16 @@
         <h1>Bienvenue sur Ping !</h1>
         <h2>Choix des joueurs :</h2>
         <div class="choix-joueurs">
-            <button type="button" class="btn un" onclick="buttonClicked(this)" id="btn-un">Joueur 1</button>
-            <button type="button" class="btn deux" onclick="buttonClicked(this)" id="btn-deux">Joueur 2</button>
-            <button type="button" class="btn trois" onclick="buttonClicked(this)" id="btn-trois">Joueur 3</button>
-            <button type="button" class="btn quatre" onclick="buttonClicked(this)" id="btn-quatre">Joueur 4</button>
+            <button type="button" class="btn un" onclick="bp1(this)">Joueur 1</button>
+            <button type="button" class="btn deux" onclick="bp2(this)">Joueur 2</button>
+            <button type="button" class="btn trois" onclick="bp3(this)">Joueur 3</button>
+            <button type="button" class="btn quatre" onclick="bp4(this)">Joueur 4</button>
         </div>
     </main>
     <footer>
-        <form id="startForm">  
+        <form action="game_page.html">  
             <button type="submit" class="button pc" id="startButton">START</button>
         </form>  
-    </div>
     </footer>
 </body>
 </html>
