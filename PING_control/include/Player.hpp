@@ -16,7 +16,7 @@ public:
 
     void right(){linear_actuator.moveTo(MAX_POSITION);}
     void left(){linear_actuator.moveTo(0);}
-    void stop(){linear_actuator.moveTo(linear_actuator.currentPosition());}
+    void stop(){linear_actuator.stop();}
 
     void setPower(uint8_t p){solenoid.setPower(p);};
     void shoot(){solenoid.On();}
@@ -31,7 +31,7 @@ public:
     void throwIn();//remise en jeu
 
 private:
-    float _acceleration=4000.0, _speed=800.0;
+    float _acceleration=2000.0, _speed=200.0;
     Solenoid solenoid;
     Linear_actuator linear_actuator;
     uint8_t _photodiod_pin;

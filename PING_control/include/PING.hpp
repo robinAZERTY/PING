@@ -8,10 +8,10 @@ class PING
 public:
     PING();
     ~PING(){};
-    static Player player1, player2, player3, player4;
-    static void init();
-    static void play();
-    static void throwIn();
+    Player player1,player2, player3, player4;
+    void init();
+    void play();
+    void throwIn();
 };
 
 #endif

@@ -14,7 +14,7 @@ la classe Linear_actuator hérite de la classe AccelStepper avec quelques foncti
 #define BELT_PITCH 2             // mm par dent de la courroie (dépend de la courroie)
 #define POULLEY_TEETH 25         // dents par poullie (dépend de la poullie)
 #define STEPS_PER_REVOLUTION 200 // nombre de pas entier par tour (dépend du moteur)
-#define MAX_POSITION 282.5         // mm (dépend de la longueur de la course)
+#define MAX_POSITION 275         // mm (dépend de la longueur de la course)
 
 
 class Linear_actuator
@@ -38,6 +38,7 @@ public:
     float currentPosition() { return stepper.currentPosition() / STEP_PER_MM;}
     void setCurrentPosition(float position_mm) { stepper.setCurrentPosition(position_mm * STEP_PER_MM);}
     void runToNewPosition(float position_mm) { stepper.runToNewPosition(position_mm * STEP_PER_MM);}
+    void stop(){ stepper.stop();}
 
 
     

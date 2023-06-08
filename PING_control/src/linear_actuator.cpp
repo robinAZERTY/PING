@@ -32,6 +32,7 @@ void Linear_actuator::run() {
     stepper.setSpeed(0);
     stepper.runSpeed();
     setCurrentPosition(MAX_POSITION);  // parceque l'endstop est au bout de la course
+    moveTo(MAX_POSITION/2);
     _calibrated = true;
   }
 }

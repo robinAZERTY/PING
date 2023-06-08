@@ -1,4 +1,4 @@
-# send all keyboard events to Arduino Serial port (115200 baud com 12)
+ # send all keyboard events to Arduino Serial port (115200 baud com 12)
 
 import serial
 import pygame

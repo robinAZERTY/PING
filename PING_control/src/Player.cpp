@@ -24,7 +24,7 @@ void Player::play()
 
 boolean Player::isBallIn()
 {
-    if (digitalRead(_photodiod_pin))// if the ball is not in the player
+    if (!digitalRead(_photodiod_pin))// if the ball is not in the player
         return false;
 
     _waitting_for_throw_in = true;
