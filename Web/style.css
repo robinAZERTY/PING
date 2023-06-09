@@ -13,7 +13,7 @@ h1 {
     width: auto;
     height: 50px;
     padding: 10px;
-    margin-top: 50px;
+    margin-top: 40px;
     line-height: 40px;
 }
 
@@ -22,13 +22,31 @@ h2 {
     width: auto;
     height: 30px;
     padding: 10px;
-    font-size: 1em;
+    font-size: 1.2rem;
     line-height: 30px;
     text-align: center;
 }
 
+h3 {
+  color : #3C2C54;
+  width: auto;
+  height: auto;
+  font-size: 1rem;
+  font-weight: bolder;
+  margin-top: 25px;
+}
+h4 {
+  color : #FB5B3C;
+  width: auto;
+  height: auto;
+  font-size: 1rem;
+  font-weight: bolder;
+  margin-top: 25px;
+}
+
+
 p {
-    color : #3C2C54;
+    color : black;
     text-align: start;
     margin-left: 5px;
     margin-right: 5px;
@@ -40,9 +58,13 @@ p {
     height: 50px;
     border-radius: 15px;
     margin-top: 10px;
+    border: 0;
 }
 .button:active {
     background-color:#424242;
+}
+.pc {
+  margin-bottom: 50px;
 }
 
 /* Page Accueil */
@@ -62,35 +84,37 @@ p {
     width: 150px;
     height: 150px;
     margin: 10px;
-    border-radius: 5px;
+    border: 0 ;
+    border-radius: 8px;
 }
 
 .un {
-    background-color: #0000ffb6;
-    -webkit-box-shadow: 0px 5px 5px 0px #0000FF; 
-    box-shadow: 0px 5px 5px 0px #0000FF;
+    background-color: #38BDF8;
+    /* -webkit-box-shadow: 0px 5px 5px 0px #0000FF; 
+    box-shadow: 0px 5px 5px 0px #0000FF; */
 }
 .deux {
-    background-color: #008000af ;
-    -webkit-box-shadow: 0px 5px 5px 0px #008000; 
-    box-shadow: 0px 5px 5px 0px #008000;
+    background-color: #84cc16;
+    /* -webkit-box-shadow: 0px 5px 5px 0px #008000; 
+    box-shadow: 0px 5px 5px 0px #008000; */
 }
 .trois {
-    background-color: #ff0000b8;
-    -webkit-box-shadow: 0px 5px 5px 0px #FF0000; 
-    box-shadow: 0px 5px 5px 0px #FF0000;
+    background-color: #EF4444;
+    /* -webkit-box-shadow: 0px 5px 5px 0px #FF0000; 
+    box-shadow: 0px 5px 5px 0px #FF0000; */
 }
 .quatre {
-    background-color: #ffff00d0;
-    -webkit-box-shadow: 0px 5px 5px 0px #FFFF00; 
-    box-shadow: 0px 5px 5px 0px #FFFF00;
+    background-color: #FACC15;
+    /* -webkit-box-shadow: 0px 5px 5px 0px #FFFF00; 
+    box-shadow: 0px 5px 5px 0px #FFFF00; */
 }
 
 
 .square {
   display: inline-block;
   vertical-align: middle; 
-  width: 70px; 
+  width: 70px;
+  border-radius: 14px;
   height: 70px;
 }
 .circle {
@@ -113,8 +137,7 @@ p {
 }
 path {
   fill: rgb(255, 255, 255);
-  stroke: #3C2C54;
-  stroke-width: 0.3px;
+
 }
 
 /* Page Jeu */
@@ -176,8 +199,8 @@ path {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 30px;
-    margin-bottom: 30px; 
+    margin-top: 75px;
+    margin-bottom: 75px; 
 }
 
 .tr {
@@ -213,7 +236,7 @@ path {
 {
   text-decoration: none;
   color: #3C2C54;
-  
+
   transition: color 0.3s ease;
 }
 
@@ -291,14 +314,15 @@ path {
 {
   position: absolute;
   width: auto;
-  height: auto;
-  margin: -100px 0 0 -50px;
+  height: 100px;
+  margin: -150px 0 0 -50px;
+  margin-top: -45px;
   padding: 50px;
-  padding-top: 125px;
+  padding-top: 30px;
   border-radius: 15px;
   
   background: white;
-  opacity: 0.9;
+  opacity: 1;
   border: 3px solid #3c2c54;
   list-style-type: none;
   -webkit-font-smoothing: antialiased;
@@ -326,7 +350,7 @@ path {
     background-color: #FB5B3C;
 }
 
-.texte {
+.texte-regles {
     background-color: white;
     border-radius: 10px;
     border: 3px solid #3C2C54;
@@ -342,6 +366,91 @@ path {
 /* Page Histoire */
 .histoire-jeu {
   background-color: #FB5B3C;
+}
+.contexte-txt {
+  background-color: white;
+  border-radius: 10px;
+  border: 3px solid #3C2C54;
+  font-size: 0.9rem;
+  margin-left: 20px;
+  margin-right: 20px;
+  line-height: 20px;
+  padding :2px;
+}
+
+.nous {
+  display: flex;
+  flex: 4 1 0%;
+  flex-wrap: wrap;
+  height: 100%;
+  align-content: stretch;
+  justify-content: center;
+  z-index: 1;
+}
+
+.robin {
+  background-color: white;
+  border-radius: 10px;
+  border: 3px solid #3C2C54;
+  font-size: 0.9rem;
+  margin: 10px;
+  line-height: 15px;
+  padding : 10px;
+  height: auto;
+  width: 270px;
+  
+}
+.simon {
+  background-color: white;
+  border-radius: 10px;
+  border: 3px solid #3C2C54;
+  font-size: 0.9rem;
+  margin: 10px;
+  line-height: 15px;
+  padding :10px;
+  height: 150px;
+  width: 270px;
+}
+.baptiste {
+  background-color: white;
+  border-radius: 10px;
+  border: 3px solid #3C2C54;
+  font-size: 0.9rem;
+  margin: 10px;
+  line-height: 15px;
+  padding :10px;
+  height: 150px;
+  width: 270px;
+}
+.franck {
+  background-color: white;
+  border-radius: 10px;
+  border: 3px solid #3C2C54;
+  font-size: 0.9rem;
+  margin: 10px;
+  line-height: 15px;
+  padding :10px;
+  height: 150px;
+  width: 270px;
+}
+.thomas {
+  background-color: white;
+  border-radius: 10px;
+  border: 3px solid #3C2C54;
+  margin: 10px;
+  line-height: 15px;
+  padding :10px;
+  height: 150px;
+  width: 270px;
+}
+
+img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 50%;
+  float:left;
+  shape-outside: content-box;
 }
 
 /* Background */
