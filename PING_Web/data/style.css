@@ -27,59 +27,53 @@ h2 {
   text-align: center;
 }
 
-h3 {
-  color : black;
-  text-align: start;
-  margin-left: 30px;
-  margin-right: 30px;
-}
-
-h4 {
-  color : black;
-  text-align: center;
-  margin: 50px;
-
-}
-
 p {
-  color : black;
+  color : #3C2C54;
   text-align: start;
   margin-left: 5px;
   margin-right: 5px;
 }
 
 .button {
-  background-color: #424242;
-  width: auto;
-  height: auto;
+  background-color: #200d3c;
+  width: 100px;
+  height: 50px;
   border-radius: 15px;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 .button:active {
-  background-color: #200d3c;
+  background-color:#424242;
 }
 
 /* Page Accueil */
+
+/*  bleu carre rond vert triangle jaune rouge croix */
 .choix-joueurs {
-  display: inline;
+display: flex;
+flex: 4 1 0%;
+flex-wrap: wrap;
+height: 100%;
+align-content: stretch;
+justify-content: center;
+z-index: 1;
 }
 
 .btn {
-  width: 300px;
-  height: 30px;
-  margin: 20px;
+  width: 150px;
+  height: 150px;
+  margin: 10px;
   border-radius: 5px;
 }
 
 .un {
-  background-color: #0155fe84; ;
-  -webkit-box-shadow: 0px 5px 5px 0px #0157FE; 
-  box-shadow: 0px 5px 5px 0px #0157FE;
+  background-color: #0000ffb6;
+  -webkit-box-shadow: 0px 5px 5px 0px #0000FF; 
+  box-shadow: 0px 5px 5px 0px #0000FF;
 }
 .deux {
-  background-color: #15ff00c0; ;
-  -webkit-box-shadow: 0px 5px 5px 0px #14FF00; 
-  box-shadow: 0px 5px 5px 0px #14FF00;
+  background-color: #008000af ;
+  -webkit-box-shadow: 0px 5px 5px 0px #008000; 
+  box-shadow: 0px 5px 5px 0px #008000;
 }
 .trois {
   background-color: #ff0000b8;
@@ -87,43 +81,58 @@ p {
   box-shadow: 0px 5px 5px 0px #FF0000;
 }
 .quatre {
-  background-color: #fbff00b5;
-  -webkit-box-shadow: 0px 5px 5px 0px #FAFF00; 
-  box-shadow: 0px 5px 5px 0px #FAFF00;
+  background-color: #ffff00d0;
+  -webkit-box-shadow: 0px 5px 5px 0px #FFFF00; 
+  box-shadow: 0px 5px 5px 0px #FFFF00;
 }
 
-.gris {
-  opacity: 0.5;
-  cursor: not-allowed;
+
+.square {
+display: inline-block;
+vertical-align: middle; 
+width: 70px; 
+height: 70px;
+}
+.circle {
+display: inline-block; 
+vertical-align: middle; 
+width: 70px; 
+height: 70px;
+}
+.cross {
+display: inline-block; 
+vertical-align: middle; 
+width: 90px; 
+height: 90px;
+}
+.triangle {
+display: inline-block; 
+vertical-align: middle; 
+width: 70px; 
+height: 70px;
 }
 
-.formContainer {
-  display: inline;
-}
 
-.pseudo {
-  background-color: white;
-  width: 200px;
-  border-radius: 8px;
-  -webkit-box-shadow: 0px 5px 5px 0px #6b6b6b; 
-  box-shadow: 0px 5px 5px 0px #6b6b6b;
+
+path {
+fill: rgb(255, 255, 255);
 }
 
 /* Page Jeu */
 .game_page_body{
-  touch-action: none;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-  user-select: none;
-  outline: none;
+touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+user-select: none;
+outline: none;
 }
 
 .t-jeu {
   margin-top: 70px;
-  margin-bottom: 150px;
+  margin-bottom: 200px;
 }
 
 .jeu{
@@ -131,7 +140,6 @@ p {
   align-items: center;
   justify-content: space-around;  
   margin: 30px; 
-  
 }
 
 .left {
@@ -196,6 +204,11 @@ p {
   touch-action: manipulation;
 }
 
+.pause {
+display: none;
+}
+
+/* Menu */
 
 #menuToggle
 {
@@ -203,6 +216,7 @@ display: block;
 position: relative;
 top: 25px;
 left: 25px;
+width: 10px;
 
 z-index: 1;
 
@@ -222,8 +236,6 @@ transition: color 0.3s ease;
 {
 color: #3C2C54;
 }
-
-
 #menuToggle input
 {
 display: block;
@@ -276,7 +288,7 @@ transform-origin: 0% 100%;
 {
 opacity: 1;
 transform: rotate(45deg) translate(-2px, -1px);
-background: #3C2C54;
+background: linear-gradient(157deg, rgba(60,44,84,1) 13%, rgba(251,91,60,1) 86%);;
 }
 
 #menuToggle input:checked ~ span:nth-last-child(3)
@@ -301,7 +313,8 @@ padding-top: 125px;
 border-radius: 15px;
 
 background: white;
-border: 3px solid #3c2c5486;
+opacity: 1;
+border: 3px solid #3c2c54;
 list-style-type: none;
 -webkit-font-smoothing: antialiased;
 
@@ -331,6 +344,7 @@ transform: none;
 .texte {
   background-color: white;
   border-radius: 10px;
+  border: 3px solid #3C2C54;
   font-size: 0.9rem;
   margin-left: 20px;
   margin-right: 20px;
@@ -338,3 +352,75 @@ transform: none;
   padding :2px;
   margin-bottom:30px;
 }
+
+
+/* Page Histoire */
+.histoire-jeu {
+background-color: #FB5B3C;
+}
+
+/* Background */
+.wrapper1 span {
+position: fixed;
+bottom: -180px;
+height: 50px;
+width: 50px;
+border-radius: 50%;
+z-index: -1;
+animation: animate 10s linear infinite;
+}
+.wrapper1 span:nth-child(1) {
+left: -50px;
+bottom: -50px;
+animation-delay: 0.6s;
+width: 150px;
+height: 150px;
+background-color: #FB5B3C;
+box-shadow: 0 0 50px #FB5B3C, 0 0 100px #FB5B3C, 0 0 150px #FB5B3C, 0 0 200px #FB5B3C;
+filter: blur(5rem);
+opacity: 0.8;
+}
+.wrapper1 span:nth-child(2) {
+right: -50px;
+top: -50px;
+animation-delay: 3s;
+width: 150px;
+height: 150px;
+background-color: #3C2C54;
+box-shadow: 0 0 50px #3C2C54, 0 0 100px #3C2C54, 0 0 150px #3C2C54, 0 0 200px #3C2C54;
+filter: blur(5rem);
+opacity: 0.8;
+}
+
+.wrapper2 span {
+position: fixed;
+bottom: -180px;
+height: 50px;
+width: 50px;
+border-radius: 50%;
+z-index: -1;
+animation: animate 10s linear infinite;
+}
+.wrapper2 span:nth-child(1) {
+left: -50px;
+bottom: -50px;
+animation-delay: 0.6s;
+width: 150px;
+height: 150px;
+background-color: #ffffff;
+box-shadow: 0 0 50px #ffffff, 0 0 100px #ffffff, 0 0 150px #ffffff, 0 0 200px #ffffff;
+filter: blur(5rem);
+opacity: 0.8;
+}
+.wrapper2 span:nth-child(2) {
+right: -50px;
+top: -50px;
+animation-delay: 3s;
+width: 150px;
+height: 150px;
+background-color: #3C2C54;
+box-shadow: 0 0 50px #3C2C54, 0 0 100px #3C2C54, 0 0 150px #3C2C54, 0 0 200px #3C2C54;
+filter: blur(5rem);
+opacity: 0.8;
+}
+

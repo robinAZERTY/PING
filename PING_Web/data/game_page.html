@@ -11,15 +11,18 @@
 </head>
 <body class="game_page_body"> 
     <main>
-        <h1 class="t-jeu">Jouer !!!</h1>
+        <h1 class="t-jeu">JOUEZ !</h1>
         <section class="jeu">
             <button ontouchstart="leftButtonDown()" ontouchend="leftButtonUp()" class="left" type="button">←</button>
             <button ontouchstart="rightButtonDown()" ontouchend="rightButtonUp()" class="right" type="button">→</button>
-
         </section>
         <section class="t-r">
-            <button onclick="pushButton()" class="push" type="button">TIRER</button>
+            <button ontouchstart="pushButtonDown()" ontouchend="pushButtonUp()" class="push" type="button">TIRER</button>
         </section>
     </main>
+    <div class="wrapper1">
+        <span></span>
+        <span></span>
+    </div>
 </body>
 </html>
