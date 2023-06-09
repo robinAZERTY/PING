@@ -7,6 +7,7 @@
     <title>Accueil</title>
     <link rel="stylesheet" href="style.css" />
     <script type="text/javascript" src="script.js"></script>
+
 </head>
 <body>
     <header>
@@ -18,26 +19,64 @@
               <span></span>
               <ul id="menu">
                 <a href="index.html"><li>Accueil</li></a>
-                <a href="histoire.html"><li>Hisoire</li></a>
+                <a href="story.html"><li>Histoire</li></a>
                 <a href="rules.html"><li>Règles</li></a>
               </ul>
             </div>
           </nav>
     </header>   
-    <main>
+    <main class="main-accueil">
         <h1>Bienvenue sur Ping !</h1>
         <h2>Choix des joueurs :</h2>
         <div class="choix-joueurs">
-            <button type="button" class="btn un" onclick="bp1(this)">Joueur 1</button>
-            <button type="button" class="btn deux" onclick="bp2(this)">Joueur 2</button>
-            <button type="button" class="btn trois" onclick="bp3(this)">Joueur 3</button>
-            <button type="button" class="btn quatre" onclick="bp4(this)">Joueur 4</button>
+            <form action="game_page.html"> 
+                <button type="submit" class="btn un" onclick="bp(this,1)">
+                    <span class="square" data-functional-selector="icon" >
+                        <svg viewBox="0 0 32 32" focusable="false" stroke="none" stroke-width="0" aria-labelledby="label1" aria-hidden="true">
+                            <title id="label1">Icône</title>
+                            <path d="M7,7 L25,7 L25,25 L7,25 L7,7 Z"></path>
+                        </svg>
+                    </span>
+                </button>
+            </form> 
+            <form action="game_page.html"> 
+                <button type="submit" class="btn deux" onclick="bp(this,2)">
+                    <span class="circle" data-functional-selector="icon">
+                        <svg viewBox="0 0 32 32" focusable="false" stroke="none" stroke-width="0" aria-labelledby="label2" aria-hidden="true">
+                            <title id="label2">Icône</title>
+                            <path d="M16,27 C9.92486775,27 5,22.0751322 5,16 C5,9.92486775 9.92486775,5 16,5 C22.0751322,5 27,9.92486775 27,16 C27,22.0751322 22.0751322,27 16,27 Z"></path>
+                        </svg>
+                    </span>
+                </button>
+            </form> 
+            <form action="game_page.html"> 
+                <button type="submit" class="btn trois" onclick="bp(this,3)">
+                    <span class="cross" data-functional-selector="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg"class="bi bi-x" viewBox="0 0 16 16"> 
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" fill="white"></path>
+                        </svg>
+                    </span>
+                </button>
+            </form> 
+            <form action="game_page.html"> 
+                <button type="submit" class="btn quatre" onclick="bp(this,4)">
+                    <span class="triangle" data-functional-selector="icon">
+                        <svg viewBox="0 0 32 32" focusable="false" stroke="none" stroke-width="0" aria-labelledby="label4" aria-hidden="true">
+                            <title id="label4">Icône</title>
+                            <path d="M27,24.559972 L5,24.559972 L16,7 L27,24.559972 Z"></path>
+                        </svg>
+                    </span>
+                </button>
+            </form> 
         </div>
     </main>
-    <footer>
-        <form action="game_page.html">  
-            <button type="submit" class="button pc" id="startButton">START</button>
-        </form>  
-    </footer>
+    <div class="wrapper1">
+		<span></span>
+		<span></span>
+    </div>
 </body>
 </html>
+
+
+
+

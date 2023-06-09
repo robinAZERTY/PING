@@ -1,78 +1,118 @@
-var availablePlayers = [1,2,3,4]
-function bp1(theButton){
+//création d'une liste availablePlayers qui contiendra les joueurs disponibles
+
+// function highlight(theButton){
+//     theButton.style.fontWeight = "bold";
+//     theButton.style.fontSize = "110%";
+//     var buttons = document.getElementsByClassName("btn");
+//         for (var i = 0; i < buttons.length; i++) {
+//             if (buttons[i] !== theButton) {
+//                 buttons[i].disabled = true;
+//                 buttons[i].style.opacity = 0.5;
+//             }
+//         }
+// }
+
+
+let userStatesList= [0,0,0,0];
+
+
+//je veux que cette fonction ne fonctionne que sur index.html
+if (window.location.pathname == "/index.html") {
+let myInterval = setInterval((yee) => {
     
-    //stocker uniqueID dans les cookies
-    localStorage.setItem('uniqueId', 1);
-    console.log(localStorage.getItem('uniqueId'))
-    //supprimer uniqueID de la liste des joueurs disponibles
-    availablePlayers.splice(availablePlayers.indexOf(1), 1);
-    console.log(availablePlayers)
-    //mettre en évidence le bouton du joueur sélectionné (taille de 10% plus grande et gras)
-    theButton.style.fontWeight = "bold";
-    theButton.style.fontSize = "110%";
-       
-    //modifier le css des autres boutons de la classe choix-joueurspour les rendre moins visibles (opacité à 0.5)
-    var otherButtons = document.querySelectorAll('.');
-    for (var i = 0; i < otherButtons.length; i++) {
-        if (otherButtons[i] != theButton) {
-            otherButtons[i].style.opacity = "0.5";
-            otherButtons[i].disabled = true;
+    fetch("choosen-players").then(async (response) => {
+        
+        const states = await response.text()
+        let userStatesList = []
+
+        for (var i = 0; i < states.length; i++) {
+            userStatesList.push(parseInt(states[i]));
         }
-    }
-    
-    
+
+        console.log(states);
+        console.log(userStatesList);
+
+        let buttons = document.getElementsByClassName("btn");
+        let count = 0;
+        for (let i = 0; i < buttons.length; i++) {
+            if (userStatesList[i] == 1) {
+                count++;
+                buttons[i].disabled = true;
+                buttons[i].style.opacity = 0.5;
+                
+            }
+        }
+
+        if (count == 4) {//si les 4 joueurs sont choisis, on arrête l'interval sur toutes les pages
+            clearInterval(myInterval);            
+            console.log("clearInteral")
+        }
+        
+    })
 
     
+   
+}, 500);}
+
+
+function bp(theButton, id) {
     
-    
-}
-function bp2(){
-    localStorage.setItem('uniqueId', 2);
-    console.log(localStorage.getItem('uniqueId'))
-}
-function bp3(){
-    localStorage.setItem('uniqueId', 3);
-    console.log(localStorage.getItem('uniqueId'))  
-}
-function bp4(){
-    localStorage.setItem('uniqueId', 4);
-    console.log(localStorage.getItem('uniqueId'))  
+
+    // Stocker uniqueID dans les cookies
+    localStorage.setItem('uniqueId', id);
+    console.log(localStorage.getItem('uniqueId'));
+
+    //on fait une requête au serveur pour lui mettre à jour la liste des joueurs disponibles
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "updateAvailablePlayers/?uniqueID=" + localStorage.getItem('uniqueId'), true);
+    xhttp.send();
+
+    //on ouvre game_page.html dans une nouvelle fenêtre
+    window.open("game_page.html", "_self");
+    //arret de la fonction interval pour ne pas avoir de conflit
+    //clearInterval(myInterval);
 }
 
 
 
-var leftButton = document.querySelector('.left'); 
+var leftButton = document.querySelector('.left');
 function leftButtonDown() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "leftDown/?uniqueID="+localStorage.getItem('uniqueId'), true);
+    xhttp.open("GET", "leftDown/?uniqueID=" + localStorage.getItem('uniqueId'), true);
     xhttp.send();
     console.log(localStorage.getItem('uniqueId'))
 
 }
 function leftButtonUp() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "leftUp", true);
+    xhttp.open("GET", "leftUp/?uniqueID=" + localStorage.getItem('uniqueId'), true);
     xhttp.send();
+    console.log("leftUp");
 }
 
 
 var rightButton = document.querySelector('.right');
 function rightButtonDown() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "rightDown", true);
+    xhttp.open("GET", "rightDown/?uniqueID=" + localStorage.getItem('uniqueId'), true);
     xhttp.send();
 }
 function rightButtonUp() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "rightUp", true);
+    xhttp.open("GET", "rightUp/?uniqueID=" + localStorage.getItem('uniqueId'), true);
     xhttp.send();
 }
 
 
 
-function pushButton() {
+function pushButtonDown() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "push", true);
+    xhttp.open("GET", "pushDown/?uniqueID=" + localStorage.getItem('uniqueId'), true);
+    xhttp.send();
+}
+function pushButtonUp() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "pushUp/?uniqueID=" + localStorage.getItem('uniqueId'), true);
     xhttp.send();
 }
 // Fonction pour mettre à jour la page

@@ -8,27 +8,21 @@ const char *ssid = "esp32";
 const char *password = "123456789";
 
 
-const int right = 2;
-const int left = 3;
-const int push = 4;
+const int right = 4;
+const int left = 21;
+const int push = 18;
 // const int motor1 = ;
 // const int motor2 = ;
 // const int motor3 = ;
 // const int motor4 = ;
 
 AsyncWebServer server(80);
-//Async Udp Server
-//AsyncUDP udp;
 
-// Request Handle for broadcasting message
-// void handleRequest(AsyncWebServerRequest *request) {
-//   String message = "Ceci est la requete Update";
-//   udp.broadcastTo(message.c_str(), 1234); //Broadcast the message to all devices on the network
-//   request->send(200, "text/plain", "Update sent");
-// }
+bool choosenPlayer[4] = {0,0,0,0};
 
 void setup()
 {
+  
   //----------------------------------------------------Serial
   Serial.begin(115200);
   Serial.println("\n");
@@ -102,38 +96,196 @@ void setup()
 
   server.on("/rightDown", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    Serial.println("On avance à droite");
+    //on récupère les paramètres de la requête
+    String message = request->getParam(0)->value();
+    //on convertit le message en int
+    int recievedPlayerId = message.toInt();
+    //en fonction du joueur on effectue une action différente avec un switch
+    //si id=1 on print le joueur id avance à gauche
+    switch (recievedPlayerId)
+    {
+    case 1:
+      Serial.println("Joueur 1 avance à droite");
+      digitalWrite(right, HIGH);
+      break;
+    case 2:
+      Serial.println("Joueur 2 avance à droite");
+      break;
+    case 3:
+      Serial.println("Joueur 3 avance à droite");
+      break;
+    case 4:
+      Serial.println("Joueur 4 avance à droite");
+      break;
+    default:
+      break;
+    }
     request->send(200);
   });
 
   server.on("/rightUp", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    Serial.println("STOP a droite");
+    //on récupère les paramètres de la requête
+    String message = request->getParam(0)->value();
+    //on convertit le message en int
+    int recievedPlayerId = message.toInt();
+    //en fonction du joueur on effectue une action différente avec un switch
+    //si id=1 on print le joueur id avance à gauche
+    switch (recievedPlayerId)
+    {
+    case 1:
+      Serial.println("Joueur 1 STOP à droite");
+      digitalWrite(right, LOW);
+      break;
+    case 2:
+      Serial.println("Joueur 2 STOP à droite");
+      break;
+    case 3:
+      Serial.println("Joueur 3 STOP à droite");
+      break;
+    case 4:
+      Serial.println("Joueur 4 STOP à droite");
+      break;
+    default:
+      break;
+    }
     request->send(200);
   });
 
 
   server.on("/leftDown", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    Serial.println("On avance à gauche");
+    //on récupère les paramètres de la requête
+    String message = request->getParam(0)->value();
+    //on convertit le message en int
+    int recievedPlayerId = message.toInt();
+    //en fonction du joueur on effectue une action différente avec un switch
+    //si id=1 on print le joueur id avance à gauche
+    switch (recievedPlayerId)
+    {
+    case 1:
+      Serial.println("Joueur 1 avance à gauche");
+      digitalWrite(left, HIGH);
+      break;
+    case 2:
+      Serial.println("Joueur 2 avance à gauche");
+      break;
+    case 3:
+      Serial.println("Joueur 3 avance à gauche");
+      break;
+    case 4:
+      Serial.println("Joueur 4 avance à gauche");
+      break;
+    default:
+      break;
+    }
     request->send(200);
   });
+
 
     server.on("/leftUp", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    Serial.println("STOP a gauche");
+    //on récupère les paramètres de la requête
+    String message = request->getParam(0)->value();
+    //on convertit le message en int
+    int recievedPlayerId = message.toInt();
+    //en fonction du joueur on effectue une action différente avec un switch
+    //si id=1 on print le joueur id avance à gauche
+    switch (recievedPlayerId)
+    {
+    case 1:
+      Serial.println("Joueur 1 STOP à gauche");
+      digitalWrite(left, LOW);
+      break;
+    case 2:
+      Serial.println("Joueur 2 STOP à gauche");
+      break;
+    case 3:
+      Serial.println("Joueur 3 STOP à gauche");
+      break;
+    case 4:
+      Serial.println("Joueur 4 STOP à gauche");
+      break;
+    default:
+      break;
+    }
     request->send(200);
   });
 
-  server.on("/push", HTTP_GET, [](AsyncWebServerRequest *request)
+  server.on("/pushDown", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    Serial.println("push");
+    //on récupère les paramètres de la requête
+    String message = request->getParam(0)->value();
+    //on convertit le message en int
+    int recievedPlayerId = message.toInt();
+    //en fonction du joueur on effectue une action différente avec un switch
+    //si id=1 on print le joueur id avance à gauche
+    switch (recievedPlayerId)
+    {
+    case 1:
+      Serial.println("Joueur 1 Push");
+      digitalWrite(push, HIGH);
+      break;
+    case 2:
+      Serial.println("Joueur 2 Push");
+      break;
+    case 3:
+      Serial.println("Joueur 3 Push");
+      break;
+    case 4:
+      Serial.println("Joueur 4 Push");
+      break;
+    default:
+      break;
+    }
     request->send(200);
   });
 
-  // Broadcast de la page
-  //server.on("/start", HTTP_GET, handleRequest);
+  server.on("/pushUp", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+    //on récupère les paramètres de la requête
+    String message = request->getParam(0)->value();
+    //on convertit le message en int
+    int recievedPlayerId = message.toInt();
+    //en fonction du joueur on effectue une action différente avec un switch
+    //si id=1 on print le joueur id avance à gauche
+    switch (recievedPlayerId)
+    {
+    case 1:
+      Serial.println("Joueur 1 STOP Push");
+      digitalWrite(push, LOW);
+      break;
+    case 2:
+      Serial.println("Joueur 2 STOP Push");
+      break;
+    case 3:
+      Serial.println("Joueur 3 STOP Push");
+      break;
+    case 4:
+      Serial.println("Joueur 4 STOP Push");
+      break;
+    default:
+      break;
+    }
+    request->send(200);
+  });
 
+  server.on("/updateAvailablePlayers", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+    //on récupère les paramètres de la requête
+    String message = request->getParam(0)->value();
+    //on convertit le message en int
+    int playerId = message.toInt();
+    //on met à jour le tableau des joueurs
+    choosenPlayer[playerId-1] = 1;
+
+  });
+  server.on("/choosen-players", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+    //on envoie chossenPlayer au client pour qu'il puisse mettre à jour son interface. Les valeurs sont séparées par des virgules
+    request->send(200, "text/plain", String(choosenPlayer[0]) + String(choosenPlayer[1]) + String(choosenPlayer[2]) + String(choosenPlayer[3]));
+    
+  });
 
   server.begin();
   Serial.println("Serveur actif!");
