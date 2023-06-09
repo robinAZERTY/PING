@@ -5,6 +5,8 @@
 #include "Solenoid.hpp"
 #include "pin_configurations.hpp"
 
+#define PHOTO_DIODE_TRESHOLD 3599
+
 class Player
 {
 public:

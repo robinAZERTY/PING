@@ -80,24 +80,35 @@ void Task2func()
   the_ping.play();
 }
 
-TaskHandle_t Task1, Task2;
+void AsyncFunc(void *pvParameters)
+{
+  while(true)
+  {
+  the_ping.isBallIn();
+  delay(10);
+  }
+}
+TaskHandle_t AsyncTask;
 
 void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(115200);
   the_ping.init();
+// AsynTask on the Second core
+  xTaskCreatePinnedToCore(
+      AsyncFunc, /* Function to implement the task */
+      "AsyncTask",   /* Name of the task */
+      10000,     /* Stack size in words */
+      NULL,      /* Task input parameter */
+      0,         /* Priority of the task */
+      &AsyncTask,    /* Task handle. */
+      0);        /* Core where the task should run */
 
-  // use the 2 cores of the esp32
-
-  
 }
   
 void loop()
 {  
 Task1func();//on regarde sur le port serie si on a recu des commandes et on execute les commandes
 Task2func();
-
-
-
 }

@@ -19,18 +19,16 @@ void PING::init()
 
 void PING::play()
 {
-    // check if a player take a shoot
-    //player1.isBallIn();
-    //player2.isBallIn();
-    //player3.isBallIn();
-    //player4.isBallIn();
-
     player1.play();
     player2.play();
     player3.play();
     player4.play();
 }
 
+bool PING::isBallIn()
+{
+    return player1.isBallIn() || player2.isBallIn() || player3.isBallIn() || player4.isBallIn();
+}
 void PING::throwIn()
 {
     //player1.throwIn();

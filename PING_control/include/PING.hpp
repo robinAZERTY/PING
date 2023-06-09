@@ -12,6 +12,7 @@ public:
     void init();
     void play();
     void throwIn();
+    bool isBallIn();
 };
 
 #endif

@@ -6,7 +6,7 @@
 #define STEP_PIN_1 21
 #define END_STOP_PIN_1 18
 #define SOLEOID_PIN_1 23
-#define PHOTODIOD_PIN_1 17
+#define PHOTODIOD_PIN_1 0
 
 //joueur 2 (triangle)
 #define DIR_PIN_2 25
@@ -18,7 +18,7 @@
 //joueur 3 (croix)
 #define DIR_PIN_3 14
 #define STEP_PIN_3 32
-#define END_STOP_PIN_3 34
+#define END_STOP_PIN_3 17
 #define SOLEOID_PIN_3 27
 #define PHOTODIOD_PIN_3 12
 
@@ -26,8 +26,8 @@
 #define DIR_PIN_4 5 
 #define STEP_PIN_4 15
 #define END_STOP_PIN_4 13
-#define SOLEOID_PIN_4 4
-#define PHOTODIOD_PIN_4 19
+#define SOLEOID_PIN_4 19
+#define PHOTODIOD_PIN_4 36
 
 
 
