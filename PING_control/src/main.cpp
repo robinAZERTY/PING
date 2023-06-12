@@ -2,113 +2,135 @@
 #include "Ping.hpp"
 
 PING the_ping;
-void Task1func()
+
+#define CODE_BP_DROIT 0
+#define CODE_BP_GAUCHE 1
+#define CODE_BP_SHOOT 2
+
+#define CODE_PUSH 0
+#define CODE_RELEASE 1
+
+#define SEP ";"
+
+void receiveFromSerial()
 {
-  // using the serial monitor to control the player
-  //  on press left arrow key -> move left
-  //  on release left arrow key -> stop
-  //  on press right arrow key -> move right
-  //  on release right arrow key -> stop
-  //  on press space bar -> shoot
-  //  on release space bar -> release
-  // the key datas are sent by the python script on the serial port
-
-  // if a entier new line was printed
-  if (Serial.available() > 0)
+  if (Serial.available())
   {
-    String data = Serial.readStringUntil('\n');        //"654654,54"
-    String key = data.substring(0, data.indexOf(',')); //"654654"
-    String ty = data.substring(data.indexOf(',') + 1); //"54"
 
-    if (key == "1073741904") // left arrow key
+    String data = Serial.readStringUntil('\n'); // de la forme "1;0;1" ou "1;1;1"
+    String player_id = data.substring(0, data.indexOf(SEP));
+    Player *player = NULL;
+    switch (player_id.toInt())
     {
-      if (ty == "768") // press
-      {
-        the_ping.player1.left();
-        the_ping.player2.left();
-        the_ping.player3.left();
-        the_ping.player4.left();
-        }
-      else if (ty == "769") // release
-      {
-        the_ping.player1.stop();
-        the_ping.player2.stop();
-        the_ping.player3.stop();
-        the_ping.player4.stop();
-      }
+    case 1:
+      player = &the_ping.player1;
+      break;
+    case 2:
+      player = &the_ping.player2;
+      break;
+    case 3:
+      player = &the_ping.player3;
+      break;
+    case 4:
+      player = &the_ping.player4;
+      break;
     }
-    else if (key == "1073741903") // right arrow key
+    // on choisi l'action a effectuer en fonction du code boutton et si on le push ou release
+    switch (data.substring(data.indexOf(SEP) + 1).toInt())
     {
-      if (ty == "768") // press
+    case CODE_BP_DROIT:
+      if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_PUSH)
       {
-        the_ping.player1.right();
-        the_ping.player2.right();
-        the_ping.player3.right();
-        the_ping.player4.right();
+        player->right();
       }
-      else if (ty == "769") // release
+      else if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_RELEASE)
       {
-        the_ping.player1.stop();
-        the_ping.player2.stop();
-        the_ping.player3.stop();
-        the_ping.player4.stop();
+        player->stop();
       }
-    }
-    else if (key == "32") // space bar
-    {
-      if (ty == "768") // press
+      break;
+    case CODE_BP_GAUCHE:
+      if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_PUSH)
       {
-        the_ping.player1.shoot();
-        the_ping.player2.shoot();
-        the_ping.player3.shoot();
-        the_ping.player4.shoot();
+        player->left();
       }
-      else if (ty == "769") // release
+      else if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_RELEASE)
       {
-        the_ping.player1.release();
-        the_ping.player2.release();
-        the_ping.player3.release();
-        the_ping.player4.release();
-        
+        player->stop();
       }
+      break;
+    case CODE_BP_SHOOT:
+      if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_PUSH)
+      {
+        player->shoot();
+      }
+      else if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_RELEASE)
+      {
+        player->release();
+      }
+      break;
     }
   }
 }
 
-void Task2func()
-{
-  the_ping.play();
-}
+TaskHandle_t Task1,Task2, Task3;
 
-void AsyncFunc(void *pvParameters)
+void receiveFromSerial_Task(void *pvParameters)
 {
-  while(true)
+  while (true)
   {
-  the_ping.isBallIn();
-  delay(10);
+    receiveFromSerial();
+    delay(10);
   }
 }
-TaskHandle_t AsyncTask;
+
+void lookForBallIn_Task(void *pvParameters)
+{
+  while (true)
+  {
+    the_ping.isBallIn();
+    delay(10);
+  }
+}
+
+void play_Task(void *pvParameters)
+{
+  while (true)
+  {
+    the_ping.play();
+    delay(10);
+  }
+}
+
 
 void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(115200);
   the_ping.init();
-// AsynTask on the Second core
+  // AsynTask on the Second core
   xTaskCreatePinnedToCore(
-      AsyncFunc, /* Function to implement the task */
-      "AsyncTask",   /* Name of the task */
-      10000,     /* Stack size in words */
-      NULL,      /* Task input parameter */
-      0,         /* Priority of the task */
-      &AsyncTask,    /* Task handle. */
-      0);        /* Core where the task should run */
+      receiveFromSerial_Task, /* Function to implement the task */
+      "receiveFromSerial_Task", /* Name of the task */
+      10000,                    /* Stack size in words */
+      NULL,                     /* Task input parameter */
+      0,                        /* Priority of the task */
+      &Task1,               /* Task handle. */
+      0);                       /* Core where the task should run */
+  
+  xTaskCreatePinnedToCore(
+      lookForBallIn_Task, /* Function to implement the task */
+      "lookForBallIn_Task", /* Name of the task */
+      10000,                    /* Stack size in words */
+      NULL,                     /* Task input parameter */
+      1,                        /* Priority of the task */
+      &Task2,               /* Task handle. */
+      0);                       /* Core where the task should run */
+    
+  
 
 }
-  
+
 void loop()
-{  
-Task1func();//on regarde sur le port serie si on a recu des commandes et on execute les commandes
-Task2func();
+{
+  the_ping.play();
 }
