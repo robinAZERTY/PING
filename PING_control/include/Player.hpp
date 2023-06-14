@@ -6,6 +6,8 @@
 #include "pin_configurations.hpp"
 
 #define PHOTO_DIODE_TRESHOLD 3599
+#define SECURE_DISTANCE 20
+#define BALL_SECURE_TIME 1000
 
 class Player
 {
@@ -15,30 +17,33 @@ public:
     ~Player(){};
 
     void calibrate(){linear_actuator.calibrate();}
+    
+    void right();
+    void left();
+    void stop();
 
-    void right(){linear_actuator.moveTo(MAX_POSITION);}
-    void left(){linear_actuator.moveTo(0);}
-    void stop(){linear_actuator.stop();}
+    void waitForThrowIn(){_waitting_for_throw_in = true;};
 
     void setPower(uint8_t p){solenoid.setPower(p);};
-    void shoot(){solenoid.On();}
-    void release(){solenoid.Off();}
+    void shoot();
+    void release();
     void play();
 
-    bool isAlive(){return _lives>0;}
-    void resetLives(){_lives=_max_lives;}
-
     boolean isBallIn();
-    void remove_a_Life(){_lives--;}
     void throwIn();//remise en jeu
 
+    boolean isWaittingForThrowIn(){_previous_ball_in_state=_waitting_for_throw_in;return _waitting_for_throw_in;}
+    boolean isBallInStateChange(){return _previous_ball_in_state!=_waitting_for_throw_in;}
+    boolean isCalibrated(){return linear_actuator.isCalibrated();}
+    boolean isMoving(){return linear_actuator.distanceToGo()!=0;}
+    boolean isReadyToPlay(){return _ready_to_play;}
 private:
     float _acceleration=2000.0, _speed=200.0;
     Solenoid solenoid;
     Linear_actuator linear_actuator;
     uint8_t _photodiod_pin;
-    boolean _waitting_for_throw_in = false;
-    uint8_t _lives = 3, _max_lives = 3;
+    boolean _waitting_for_throw_in = false, _previous_ball_in_state = false, _ready_to_play = false;
+    unsigned long _time_of_last_ball_in = 0;
 };
 
 #endif

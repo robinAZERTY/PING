@@ -15,7 +15,7 @@ la classe Linear_actuator hérite de la classe AccelStepper avec quelques foncti
 #define POULLEY_TEETH 25         // dents par poullie (dépend de la poullie)
 #define STEPS_PER_REVOLUTION 200 // nombre de pas entier par tour (dépend du moteur)
 #define MAX_POSITION 275         // mm (dépend de la longueur de la course)
-
+const unsigned long CALIBRATION_MAX_TRAVEL = int(1.05*MAX_POSITION); 
 
 class Linear_actuator
 {
@@ -24,6 +24,9 @@ public:
     Linear_actuator(int dir_pin, int step_pin, int end_stop_pin);
     ~Linear_actuator(){};
     void calibrate(); // when we want to check for a new falling edge
+    void breakCalibration(){_calibrating = false;}
+    void resumeCalibration();
+    bool isCalibrated(){return _calibrated;}
     void moveTo(float absolute_mm);
     void run();
     void move(float relative_mm){ stepper.move((long)(relative_mm * STEP_PER_MM));}
@@ -46,7 +49,7 @@ private:
     AccelStepper stepper;
     static constexpr float STEP_PER_MM = (float)STEPS_PER_REVOLUTION * MICROSTEP / BELT_PITCH / POULLEY_TEETH,CALIBRATION_SPEED = 100.0;
     int _end_stop_pin;
-    bool _calibrated;
+    bool _calibrating = false,_calibrated = false;
 };
 
 #endif
