@@ -1,24 +1,9 @@
-//création d'une liste availablePlayers qui contiendra les joueurs disponibles
-
-// function highlight(theButton){
-//     theButton.style.fontWeight = "bold";
-//     theButton.style.fontSize = "110%";
-//     var buttons = document.getElementsByClassName("btn");
-//         for (var i = 0; i < buttons.length; i++) {
-//             if (buttons[i] !== theButton) {
-//                 buttons[i].disabled = true;
-//                 buttons[i].style.opacity = 0.5;
-//             }
-//         }
-// }
-
-
 let userStatesList= [0,0,0,0];
 
 
-//je veux que cette fonction ne fonctionne que sur index.html
-if (window.location.pathname == "/index.html") {
-let myInterval = setInterval((yee) => {
+
+if (window.location.pathname == "/index.html") {//si l'on est sur la page d'accueil
+let myInterval = setInterval((yee) => {//on fait une requête au serveur toutes les 500ms pour récupérer la liste des joueurs choisis
     
     fetch("choosen-players").then(async (response) => {
         
@@ -31,47 +16,65 @@ let myInterval = setInterval((yee) => {
 
         console.log(states);
         console.log(userStatesList);
-
+        
         let buttons = document.getElementsByClassName("btn");
         let count = 0;
         for (let i = 0; i < buttons.length; i++) {
             if (userStatesList[i] == 1) {
                 count++;
                 buttons[i].disabled = true;
-                buttons[i].style.opacity = 0.5;
+                buttons[i].style.opacity = 0.3;
                 
             }
         }
 
-        if (count == 4) {//si les 4 joueurs sont choisis, on arrête l'interval sur toutes les pages
+        if (count == 4) {//si les 4 joueurs sont choisis, on arrête l'interval 
             clearInterval(myInterval);            
             console.log("clearInteral")
+            
         }
-        
-    })
 
-    
-   
+    })
 }, 500);}
 
 
 function bp(theButton, id) {
     
-
     // Stocker uniqueID dans les cookies
     localStorage.setItem('uniqueId', id);
     console.log(localStorage.getItem('uniqueId'));
-
+    
     //on fait une requête au serveur pour lui mettre à jour la liste des joueurs disponibles
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", "updateAvailablePlayers/?uniqueID=" + localStorage.getItem('uniqueId'), true);
     xhttp.send();
-
-    //on ouvre game_page.html dans une nouvelle fenêtre
-    window.open("game_page.html", "_self");
-    //arret de la fonction interval pour ne pas avoir de conflit
-    //clearInterval(myInterval);
+    
 }
+
+function allAreReady(){
+    //on attent la requete du serveur pour savoir si tous les joueurs sont prêts
+    let myInterval = setInterval((yee) => {
+        fetch("can-start").then(async (response) => {
+            const states = await response.text()
+            console.log(states);
+            let userStatesList = []
+
+            for (var i = 0; i < states.length; i++) {
+                userStatesList.push(parseInt(states[i]));
+            }
+            console.log(userStatesList);
+            //si la première valeur de la liste est égale à l'id, alors on ouvre start.html
+            if (userStatesList[0] == localStorage.getItem('uniqueId')) {
+                clearInterval(myInterval);
+                window.location.href = "start.html";
+            }
+        })
+    }, 500);
+}
+
+            
+          
+
 
 
 
@@ -113,12 +116,6 @@ function pushButtonDown() {
 function pushButtonUp() {
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", "pushUp/?uniqueID=" + localStorage.getItem('uniqueId'), true);
-    xhttp.send();
-}
-// Fonction pour mettre à jour la page
-function update() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "update", true);
     xhttp.send();
 }
 

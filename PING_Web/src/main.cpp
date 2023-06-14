@@ -1,44 +1,36 @@
 #include <Arduino.h>
 #include <ESPAsyncWebServer.h>
-//Udp Library
-//#include <EspAsyncUDP.h>
 #include <SPIFFS.h>
 
 const char *ssid = "esp32";
 const char *password = "123456789";
 
+#define CODE_BP_DROIT 0
+#define CODE_BP_GAUCHE 1
+#define CODE_BP_SHOOT 2
 
-const int right = 4;
-const int left = 21;
-const int push = 18;
-// const int motor1 = ;
-// const int motor2 = ;
-// const int motor3 = ;
-// const int motor4 = ;
+#define CODE_PUSH 0
+#define CODE_RELEASE 1
+
+#define SEP ";"
+
 
 AsyncWebServer server(80);
 
 bool choosenPlayer[4] = {0,0,0,0};
+int randomPlayer = 1; 
+
+
 
 void setup()
 {
   
   //----------------------------------------------------Serial
   Serial.begin(115200);
-  Serial.println("\n");
-
-  //----------------------------------------------------GPIO
-  pinMode(right, OUTPUT);
-  digitalWrite(right, LOW);
-  pinMode(left, OUTPUT);
-  digitalWrite(left, LOW);
-  pinMode(push, OUTPUT);
-  digitalWrite(push, LOW);
 
   //----------------------------------------------------SPIFFS
   if(!SPIFFS.begin())
   {
-    Serial.println("Erreur SPIFFS...");
     return;
   }
 
@@ -47,20 +39,16 @@ void setup()
 
   while(file)
   {
-    Serial.print("File: ");
-    Serial.println(file.name());
     file.close();
     file = root.openNextFile();
   }
 
   //----------------------------------------------------WIFI
-  Serial.println("Creation du point d'acces...");
 	WiFi.softAP(ssid, password);
-	Serial.println("Connexion etablie!");
-	Serial.print("Adresse IP: ");
-	Serial.println(WiFi.softAPIP());
 
   //----------------------------------------------------SERVER
+
+  
   //---Général---
   server.on("/index.html", HTTP_GET, [](AsyncWebServerRequest *request)
   {
@@ -82,10 +70,57 @@ void setup()
     request->send(SPIFFS, "/rules.html", "text/html");
   });
 
+  server.on("/story.html", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+    request->send(SPIFFS, "/story.html", "text/html");
+  });
+
+  server.on("/waiting_page.html", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+    request->send(SPIFFS, "/waiting_page.html", "text/html");
+  });
+
   server.on("/scores.html", HTTP_GET, [](AsyncWebServerRequest *request)
   {
     request->send(SPIFFS, "/scores.html", "text/html");
   });
+  
+  server.on("/start.html", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+    request->send(SPIFFS, "/start.html", "text/html");
+  });
+
+  //--------------------------------------------Images--------------------------------------------------------
+  
+  server.on("/img/robin.png", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/img/robin.png", "image/png");
+  });
+
+  server.on("/img/baptiste1.jpg", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/img/baptiste1.jpg", "image/png");
+  });
+
+  server.on("/img/baptiste2.jpg", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/img/baptiste2.jpg", "image/png");
+  });
+
+  server.on("/img/LOGO.png", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/img/LOGO.png", "image/png");
+  });
+
+  server.on("/img/simon.jpg", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/img/simon.jpg", "image/png");
+  });
+
+  server.on("/img/franck.png", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/img/franck.png", "image/png");
+  });
+  server.on("/img/thomas.png", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/img/thomas.png", "image/png");
+  });
+
+  
+
   
 
   //---Game---
@@ -102,24 +137,15 @@ void setup()
     int recievedPlayerId = message.toInt();
     //en fonction du joueur on effectue une action différente avec un switch
     //si id=1 on print le joueur id avance à gauche
-    switch (recievedPlayerId)
-    {
-    case 1:
-      Serial.println("Joueur 1 avance à droite");
-      digitalWrite(right, HIGH);
-      break;
-    case 2:
-      Serial.println("Joueur 2 avance à droite");
-      break;
-    case 3:
-      Serial.println("Joueur 3 avance à droite");
-      break;
-    case 4:
-      Serial.println("Joueur 4 avance à droite");
-      break;
-    default:
-      break;
-    }
+
+    String to_send="";
+    to_send += String(recievedPlayerId);
+    to_send += SEP;
+    to_send += String(CODE_BP_DROIT);
+    to_send += SEP;
+    to_send += String(CODE_PUSH);
+    Serial.println(to_send);
+
     request->send(200);
   });
 
@@ -129,26 +155,15 @@ void setup()
     String message = request->getParam(0)->value();
     //on convertit le message en int
     int recievedPlayerId = message.toInt();
-    //en fonction du joueur on effectue une action différente avec un switch
-    //si id=1 on print le joueur id avance à gauche
-    switch (recievedPlayerId)
-    {
-    case 1:
-      Serial.println("Joueur 1 STOP à droite");
-      digitalWrite(right, LOW);
-      break;
-    case 2:
-      Serial.println("Joueur 2 STOP à droite");
-      break;
-    case 3:
-      Serial.println("Joueur 3 STOP à droite");
-      break;
-    case 4:
-      Serial.println("Joueur 4 STOP à droite");
-      break;
-    default:
-      break;
-    }
+    
+    String to_send="";
+    to_send += String(recievedPlayerId);
+    to_send += SEP;
+    to_send += String(CODE_BP_DROIT);
+    to_send += SEP;
+    to_send += String(CODE_RELEASE);
+    Serial.println(to_send);
+
     request->send(200);
   });
 
@@ -159,26 +174,14 @@ void setup()
     String message = request->getParam(0)->value();
     //on convertit le message en int
     int recievedPlayerId = message.toInt();
-    //en fonction du joueur on effectue une action différente avec un switch
-    //si id=1 on print le joueur id avance à gauche
-    switch (recievedPlayerId)
-    {
-    case 1:
-      Serial.println("Joueur 1 avance à gauche");
-      digitalWrite(left, HIGH);
-      break;
-    case 2:
-      Serial.println("Joueur 2 avance à gauche");
-      break;
-    case 3:
-      Serial.println("Joueur 3 avance à gauche");
-      break;
-    case 4:
-      Serial.println("Joueur 4 avance à gauche");
-      break;
-    default:
-      break;
-    }
+    
+    String to_send="";
+    to_send += String(recievedPlayerId);
+    to_send += SEP;
+    to_send += String(CODE_BP_GAUCHE);
+    to_send += SEP;
+    to_send += String(CODE_PUSH);
+    Serial.println(to_send);
     request->send(200);
   });
 
@@ -189,26 +192,14 @@ void setup()
     String message = request->getParam(0)->value();
     //on convertit le message en int
     int recievedPlayerId = message.toInt();
-    //en fonction du joueur on effectue une action différente avec un switch
-    //si id=1 on print le joueur id avance à gauche
-    switch (recievedPlayerId)
-    {
-    case 1:
-      Serial.println("Joueur 1 STOP à gauche");
-      digitalWrite(left, LOW);
-      break;
-    case 2:
-      Serial.println("Joueur 2 STOP à gauche");
-      break;
-    case 3:
-      Serial.println("Joueur 3 STOP à gauche");
-      break;
-    case 4:
-      Serial.println("Joueur 4 STOP à gauche");
-      break;
-    default:
-      break;
-    }
+    
+       String to_send="";
+    to_send += String(recievedPlayerId);
+    to_send += SEP;
+    to_send += String(CODE_BP_GAUCHE);
+    to_send += SEP;
+    to_send += String(CODE_RELEASE);
+    Serial.println(to_send);
     request->send(200);
   });
 
@@ -218,26 +209,14 @@ void setup()
     String message = request->getParam(0)->value();
     //on convertit le message en int
     int recievedPlayerId = message.toInt();
-    //en fonction du joueur on effectue une action différente avec un switch
-    //si id=1 on print le joueur id avance à gauche
-    switch (recievedPlayerId)
-    {
-    case 1:
-      Serial.println("Joueur 1 Push");
-      digitalWrite(push, HIGH);
-      break;
-    case 2:
-      Serial.println("Joueur 2 Push");
-      break;
-    case 3:
-      Serial.println("Joueur 3 Push");
-      break;
-    case 4:
-      Serial.println("Joueur 4 Push");
-      break;
-    default:
-      break;
-    }
+ 
+    String to_send="";
+    to_send += String(recievedPlayerId);
+    to_send += SEP;
+    to_send += String(CODE_BP_SHOOT);
+    to_send += SEP;
+    to_send += String(CODE_PUSH);
+    Serial.println(to_send);
     request->send(200);
   });
 
@@ -247,26 +226,15 @@ void setup()
     String message = request->getParam(0)->value();
     //on convertit le message en int
     int recievedPlayerId = message.toInt();
-    //en fonction du joueur on effectue une action différente avec un switch
-    //si id=1 on print le joueur id avance à gauche
-    switch (recievedPlayerId)
-    {
-    case 1:
-      Serial.println("Joueur 1 STOP Push");
-      digitalWrite(push, LOW);
-      break;
-    case 2:
-      Serial.println("Joueur 2 STOP Push");
-      break;
-    case 3:
-      Serial.println("Joueur 3 STOP Push");
-      break;
-    case 4:
-      Serial.println("Joueur 4 STOP Push");
-      break;
-    default:
-      break;
-    }
+    
+    String to_send="";
+    to_send += String(recievedPlayerId);
+    to_send += SEP;
+    to_send += String(CODE_BP_SHOOT);
+    to_send += SEP;
+    to_send += String(CODE_RELEASE);
+    Serial.println(to_send);
+
     request->send(200);
   });
 
@@ -279,6 +247,7 @@ void setup()
     //on met à jour le tableau des joueurs
     choosenPlayer[playerId-1] = 1;
 
+
   });
   server.on("/choosen-players", HTTP_GET, [](AsyncWebServerRequest *request)
   {
@@ -287,8 +256,22 @@ void setup()
     
   });
 
+  server.on("/can-start", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+    if (choosenPlayer[0] == 1 && choosenPlayer[1] == 1 )
+    {
+    
+      //envoie requete contenant randomPlayer et "1"
+      request->send(200, "text/plain", "1" + String(randomPlayer) );
+      
+    }
+    else
+    {
+      request->send(200, "text/plain", "0");
+    }
+  });
+
   server.begin();
-  Serial.println("Serveur actif!");
 }
 
 void loop()
