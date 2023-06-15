@@ -10,9 +10,13 @@
     <link rel="icon" href="/img/LOGO.png">
     
 </head>
-<body onpageshow="stopIinterval()"class="game_page_body"> 
+<body onpageshow="scoresPoints()"class="game_page_body"> 
     <main>
         <h1 class="t-jeu">Jouez !!!</h1>
+        <section id="vies" class="vies">
+            
+        </section>
+        
         <section class="jeu">
             <button ontouchstart="leftButtonDown()" ontouchend="leftButtonUp()" class="left" type="button">←</button>
             <button ontouchstart="rightButtonDown()" ontouchend="rightButtonUp()" class="right" type="button">→</button>

@@ -155,10 +155,26 @@ body {
     -ms-user-select: none;
     user-select: none;
   outline: none;
+
+  .vies  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 150px;
+  }
+  
+  .coeur {
+    width: 30px;
+    height: 30px;
+    background-image: url('img/coeur.png');
+    background-size: cover;
+  }
+
   }
   .t-jeu {
     margin-top: 70px;
-    margin-bottom: 200px;
+    margin-bottom: 30px;
   }
   
   .jeu{

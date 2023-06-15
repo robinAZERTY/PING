@@ -86,7 +86,6 @@ function startButton(){//quand on appuie sur le bouton start
     xhttp.open("GET", "start/?start=" + start, true);
     xhttp.send();
 
-    
 } 
 
 
@@ -95,21 +94,70 @@ function startButton(){//quand on appuie sur le bouton start
 
 let myInterval = setInterval((yee) => {
     fetch("gameStarted").then(async (response) => {
-        const states = await response.text()
+        states = await response.text()
+        states=states.split(";")
         console.log(states);
         //si on est sur la page start.html ou sur waiting.html, on ouvre game_page.html
-        if ((window.location.pathname == "/start.html" || window.location.pathname == "/waiting_page.html")&& states == 1) {
+        if ((window.location.pathname == "/start.html" || window.location.pathname == "/waiting_page.html")&& states[0] == 1) {
             window.location.href = "game_page.html";
-            clearInterval(myInterval);
+            //clearInterval(myInterval);
 
         }
         //si on est sur la page game_page.html on arrete l'interval
-        if (window.location.pathname == "/game_page.html") {
-            clearInterval(myInterval);
-        }
+        // if (window.location.pathname == "/game_page.html") {
+        //     clearInterval(myInterval);
+        // }
 
+        // on met à jour l'affichage des vies
+        //si on est sur game_page.html
+        if (window.location.pathname == "/game_page.html") {
+
+        let localID=parseInt(localStorage.getItem('uniqueId'))
+        displayLives(parseInt(states[localID]))
+        // on affiche la page de score si un des joueurs a perdu
+        if (states[1] == "0" || states[2] == "0" || states[3] == "0" || states[4] == "0") {
+            window.location.href = "scores.html";
+        }
+        }
+        
+        
     })
 }, 500);
+
+
+// function scoresPoints(){
+// let myInterval2 = setInterval((yee) => {
+//     fetch("scores").then(async (response) => {
+//         const states = await response.text()
+//         console.log(states);
+//         //ex of state construction : String(player_lives[0]) + SEP + String(player_lives[1]) + SEP + String(player_lives[2]) + SEP + String(player_lives[3]) -> "1;5;2;0"
+//         let player_lives = states.split(";")
+//         console.log(player_lives);
+//         //on met à jour les vies du joueur concerné
+//         id=localStorage.getItem('uniqueId')
+//         //on supprime tous les élément heart
+//         displayLives(player_lives[id-1])
+
+//     }, 500);
+// });
+// }
+
+function displayLives(n){
+    let hearts = document.getElementById("vies");
+    // on écrase le contenu de hearts avec n coeurs
+    let newHearts=''
+    for (let i=0;i<n;i++)
+        newHearts+='<img class="coeur">'
+    hearts.innerHTML = newHearts;
+}
+    
+
+        
+        
+        
+
+        
+
 
 
 
