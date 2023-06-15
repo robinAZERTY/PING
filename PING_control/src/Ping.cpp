@@ -99,14 +99,16 @@ void PING::sonorInit()
         delay(100);
     delay(1000);
 
-    for (int i = 0; i < 4; i++)
+
+    for (int i = 1; i < 20; i++)
     {
-        Player *player = getPlayer(i + 1);
+        Player *player = getPlayer(((i-1)%4 + 1));
         player->shoot();
-        delay(500);
+        delay(1000/i);
         player->release();
-        delay(500);
+        delay(1000/i);
     }
+    delay(1000);
     for (int j = 0; j < 2; j++)
     {   
         for (int i = 0; i < 4; i++)

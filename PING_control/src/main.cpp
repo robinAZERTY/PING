@@ -69,6 +69,7 @@ void receiveFromSerial()
 
     case CODE_BP_THROW_IN:
       // remise en jeu
+      Serial.println("remise en jeu");
       the_ping.throwIn();
       break;
     default:
@@ -94,11 +95,12 @@ void lookForBallIn_Task(void *pvParameters)
   {
     delay(10);
 
-    if (!the_ping.checkIsBallIn())
-      continue;
-
     if (the_ping.waittingForThrowIn())
       continue;
+
+    if (!the_ping.checkIsBallIn())
+      continue;
+    
 
     if (!the_ping.isBallInStateChange())
       continue;
@@ -108,6 +110,7 @@ void lookForBallIn_Task(void *pvParameters)
       {
         continue;
       }
+
 
     // si on arrive ici, c'est que la balle vient d'etre mise dans un des joueurs
 

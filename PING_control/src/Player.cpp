@@ -61,12 +61,15 @@ boolean Player::isBallIn()
                 {
                     if (!isCalibrated())
                     {
+                        _waitting_for_throw_in = false;
                         linear_actuator.resumeCalibration();
                     }
                     if(isCalibrated()&&!_ready_to_play&&linear_actuator.currentPosition()!=MAX_POSITION/2)
+                    {
+                        _waitting_for_throw_in = false;
                         linear_actuator.moveTo(MAX_POSITION/2);
-                    
-                    _waitting_for_throw_in = false;
+                    }
+
                     return false;
                 }
             return true;
