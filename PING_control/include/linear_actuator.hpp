@@ -41,6 +41,7 @@ public:
     float currentPosition() { return stepper.currentPosition() / STEP_PER_MM;}
     void setCurrentPosition(float position_mm) { stepper.setCurrentPosition(position_mm * STEP_PER_MM);}
     void runToNewPosition(float position_mm) { stepper.runToNewPosition(position_mm * STEP_PER_MM);}
+    void setPinsInverted(bool direction, bool step, bool enable = false) { stepper.setPinsInverted(direction, step, enable);}
     void stop(){ stepper.stop();}
 
 

@@ -5,7 +5,7 @@
 #include "Solenoid.hpp"
 #include "pin_configurations.hpp"
 
-#define PHOTO_DIODE_TRESHOLD 3599
+#define PHOTO_DIODE_TRESHOLD 3800
 #define SECURE_DISTANCE 20
 #define BALL_SECURE_TIME 1000
 
@@ -13,7 +13,7 @@ class Player
 {
 public:
     Player(){};
-    Player(int dir_pin, int step_pin, int end_stop_pin, int solenoid_pin, int photodiod_pin );
+    Player(int dir_pin, bool inverted, int step_pin, int end_stop_pin, int solenoid_pin, int photodiod_pin );
     ~Player(){};
 
     void calibrate(){linear_actuator.calibrate();}

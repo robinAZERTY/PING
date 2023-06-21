@@ -7,76 +7,138 @@ ce code doit être uploadé sur l'esp32 du plateau de jeu
 
 PING the_ping;
 // for Serial reading
-#define CODE_BP_DROIT 0
-#define CODE_BP_GAUCHE 1
-#define CODE_BP_SHOOT 2
-#define CODE_BP_THROW_IN 3
-
-#define CODE_PUSH 0
-#define CODE_RELEASE 1
+// player actions
+#define LEFT "left"
+#define RIGHT "right"
+#define STOP "stop"
+#define PUNCH "punch"
+#define STOP_PUNCH "stop-punch"
+#define RESUME "resume"
 
 // for Serial writing
-#define CODE_GOAL 0
+#define CODE_GOAL "/goalTaken" // /goalTaken?playerId="id"
 
 #define SEP ";"
 
+//#define DEBUG
 void receiveFromSerial()
 {
   // si on recoit des données sur le port serie depuis l'esp32 web
   if (Serial.available())
   {
 
-    String data = Serial.readStringUntil('\n'); // de la forme "1;0;1" ou "1;1;1"
-    String player_id = data.substring(0, data.indexOf(SEP));
-    Player *player = the_ping.getPlayer(player_id.toInt());
-
     if (!the_ping.isReadToPlay())
-      return;
-
-    // on choisi l'action a effectuer en fonction du code boutton et si on le push ou release
-    switch (data.substring(data.indexOf(SEP) + 1).toInt())
     {
-    case CODE_BP_DROIT:
-      if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_PUSH)
-      {
-        player->right();
-      }
-      else if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_RELEASE)
-      {
-        player->stop();
-      }
-      break;
-    case CODE_BP_GAUCHE:
-      if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_PUSH)
-      {
-        player->left();
-      }
-      else if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_RELEASE)
-      {
-        player->stop();
-      }
-      break;
-    case CODE_BP_SHOOT:
-      if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_PUSH)
-      {
-        player->shoot();
-      }
-      else if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_RELEASE)
-      {
-        player->release();
-      }
-      break;
+      return;
+    }
 
-    case CODE_BP_THROW_IN:
-      // remise en jeu
-      Serial.println("remise en jeu");
+    String data = Serial.readStringUntil('\n') + '\n'; // de la forme /playerAction?playerId="id"&action="action"
+
+#ifdef DEBUG
+    Serial.print("data : ");
+    Serial.println(data);
+#endif
+    // on verifie que le message est bien du type /playerAction
+    String dataType = data.substring(0, data.indexOf("?"));
+    if (dataType != "/playerAction")
+    {
+      return;
+    }
+    // on recupere l'id du joueur
+    String playerId = data.substring(data.indexOf("playerId=") + 9, data.indexOf("&"));
+    // on recupere l'action
+    String action = data.substring(data.indexOf("action=") + 7, data.indexOf("\n"));
+
+    int player_id_int = playerId.toInt()+1;
+
+#ifdef DEBUG
+    Serial.print("player_id_int : ");
+    Serial.println(player_id_int);
+    Serial.print("action : ");
+    Serial.println(action);
+#endif
+
+    // on verifie la validité de l'id
+    if (player_id_int < 1 || player_id_int > 4)
+    {
+      #ifdef DEBUG
+      Serial.print("error id");
+      #endif
+      return;
+    }
+
+    // on recupere le joueur
+    Player *player = the_ping.getPlayer(player_id_int);
+
+    if (action == LEFT)
+      player->left();
+    else if (action == RIGHT)
+      player->right();
+    else if (action == STOP)
+      player->stop();
+    else if (action == PUNCH)
+      player->shoot();
+    else if (action == STOP_PUNCH)
+      player->release();
+    else if (action == RESUME)
       the_ping.throwIn();
-      break;
-    default:
-      break;
+    else
+    {
+#ifdef DEBUG
+      Serial.print("error action");
+#endif
     }
   }
 }
+//   String player_id = data.substring(0, data.indexOf(SEP));
+//   Player *player = the_ping.getPlayer(player_id.toInt());
+
+//   if (!the_ping.isReadToPlay())
+//     return;
+
+//   // on choisi l'action a effectuer en fonction du code boutton et si on le push ou release
+//   switch (data.substring(data.indexOf(SEP) + 1).toInt())
+//   {
+//   case CODE_BP_DROIT:
+//     if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_PUSH)
+//     {
+//       player->right();
+//     }
+//     else if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_RELEASE)
+//     {
+//       player->stop();
+//     }
+//     break;
+//   case CODE_BP_GAUCHE:
+//     if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_PUSH)
+//     {
+//       player->left();
+//     }
+//     else if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_RELEASE)
+//     {
+//       player->stop();
+//     }
+//     break;
+//   case CODE_BP_SHOOT:
+//     if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_PUSH)
+//     {
+//       player->shoot();
+//     }
+//     else if (data.substring(data.indexOf(SEP) + 3).toInt() == CODE_RELEASE)
+//     {
+//       player->release();
+//     }
+//     break;
+
+//   case CODE_BP_THROW_IN:
+//     // remise en jeu
+//     Serial.println("remise en jeu");
+//     the_ping.throwIn();
+//     break;
+//   default:
+//     break;
+//   }
+// }
 
 TaskHandle_t Task1, Task2, Task3;
 
@@ -100,26 +162,21 @@ void lookForBallIn_Task(void *pvParameters)
 
     if (!the_ping.checkIsBallIn())
       continue;
-    
 
     if (!the_ping.isBallInStateChange())
       continue;
 
-
     if (!the_ping.isReadToPlay())
-      {
-        continue;
-      }
-
+    {
+      continue;
+    }
 
     // si on arrive ici, c'est que la balle vient d'etre mise dans un des joueurs
 
     the_ping.waitForThrowIn(); // on stop tous les joueurs
-
-    uint8_t player_id = the_ping.getPlayerIdWichHasTheBallIn();
+    uint8_t player_id = the_ping.getPlayerIdWichHasTheBallIn()-1;
     String player_id_str = String(player_id);
-    String data = player_id_str + SEP + CODE_GOAL;
-    Serial.println(data);
+    Serial.println(String(CODE_GOAL) + "?playerId=" + player_id_str);
   }
 }
 
@@ -140,9 +197,10 @@ void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  Serial.setTimeout(50);
+  Serial.setTimeout(100);
+  delay(1000);
   the_ping.init();
-  // AsynTask on the Second core
+  // // AsynTask on the Second core
 
   xTaskCreatePinnedToCore(
       receiveFromSerial_Task,
@@ -175,9 +233,13 @@ void setup()
 void loop()
 {
   the_ping.play();
-  // Serial.print("analogRead(PHOTODIOD_PIN_1) :"+String(analogRead(PHOTODIOD_PIN_1))+"   ");
-  // Serial.print("analogRead(PHOTODIOD_PIN_2) :"+String(analogRead(PHOTODIOD_PIN_2))+"   ");
-  // Serial.print("analogRead(PHOTODIOD_PIN_3) :"+String(analogRead(PHOTODIOD_PIN_3))+"   ");
-  // Serial.println("analogRead(PHOTODIOD_PIN_4) :"+String(analogRead(PHOTODIOD_PIN_4)));
+  // Serial.print("analogRead(PHOTODIOD_PIN_1):"+String(analogRead(PHOTODIOD_PIN_1))+",");
+  // Serial.print("analogRead(PHOTODIOD_PIN_2):"+String(analogRead(PHOTODIOD_PIN_2))+",");
+  // Serial.print("analogRead(PHOTODIOD_PIN_3):"+String(analogRead(PHOTODIOD_PIN_3))+",");
+  // Serial.println("analogRead(PHOTODIOD_PIN_4):"+String(analogRead(PHOTODIOD_PIN_4)));
+  // // Serial.print("digitalRead(END_STOP_PIN_1) :"+String(digitalRead(END_STOP_PIN_1))+"   ");
+  // // Serial.print("digitalRead(END_STOP_PIN_2) :"+String(digitalRead(END_STOP_PIN_2))+"   ");
+  // // Serial.print("digitalRead(END_STOP_PIN_3) :"+String(digitalRead(END_STOP_PIN_3))+"   ");
+  // // Serial.println("digitalRead(END_STOP_PIN_4) :"+String(digitalRead(END_STOP_PIN_4)));
   // delay(50);
 }
