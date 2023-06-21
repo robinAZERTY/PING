@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Jeu</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="LOGO.png">
+    <script src ="game_page.js"></script>
+</head>
+<body onload="initGamePage()" class="game_page_body"> 
+    <main>
+        <h1 class="t-jeu">Jouez !!!</h1>
+        <section id="vies">
+        </section>
+        <section class="jeu">
+            <button id="leftButton" ontouchstart="leftButtonDown()" ontouchend="leftButtonUp()" class="left" type="button">←</button>
+            <button id="rightButton" ontouchstart="rightButtonDown()" ontouchend="rightButtonUp()" class="right" type="button">→</button>
+        </section>
+        
+        <section class="t-r">
+            <button id="punchButton" ontouchstart="punchButtonDown()" ontouchend="punchButtonUp()" type="button" class="tirer">Tirer</button>
+            <button id="resumeButton" onclick="resume()" type="button" class="reprendre">Reprendre</button>
+        </section>
+    </main>
+    <div class="wrapper1">
+		<span></span>
+		<span></span>
+    </div>
+</body>
+</html>
