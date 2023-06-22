@@ -64,10 +64,10 @@ class MyWebServer
         AsyncEventSource *getGoalTaken_SSE=NULL;
         AsyncEventSource *getEndGame_SSE=NULL;
         /* data */
-        const char *ssid = "esp32";
+        const char *ssid = "PING";
         const char *password = "123456789";
         const uint maxLives=5;
-        bool connectedPlayer[4],previousConnectedPlayer[4];
+        bool connectedPlayer[4]={false,false,false,false},previousConnectedPlayer[4]={false,false,false,false};
         bool started=false,ended=false;
         uint8_t playerLives[4];
 

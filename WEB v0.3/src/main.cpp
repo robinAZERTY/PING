@@ -1,7 +1,7 @@
 #include "webConnection.hpp"
 
 
-MyWebServer myWeb;
+MyWebServer myWeb= MyWebServer();
 
 void setup()
 {

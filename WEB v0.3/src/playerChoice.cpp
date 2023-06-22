@@ -1,6 +1,6 @@
 #include "webConnection.hpp"
 
-#define DEBUG false
+#define DEBUG true
 
 int MyWebServer::initPlayerChoice()
 {

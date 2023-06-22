@@ -1,6 +1,6 @@
 #include "webConnection.hpp"
 
-#define DEBUG false
+#define DEBUG true
 
 MyWebServer::MyWebServer()
 {
@@ -199,7 +199,7 @@ void MyWebServer::receiveFromSerial(HardwareSerial &serial)
     else if (id == 3)
         getLives_SSE_3->send(String(this->playerLives[3]).c_str());
     
-    
+
 
     // on regarde si le joueur est mort
     if (this->playerLives[id] == 0)
