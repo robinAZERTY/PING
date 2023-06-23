@@ -16,7 +16,7 @@ public:
     void stop();
     void throwIn();
     bool checkIsBallIn();
-    bool isBallInStateChange();
+    int isBallInStateChange();
     bool waittingForThrowIn();
     bool isCalibrated();
     bool isReadToPlay(){return _read_to_play;}

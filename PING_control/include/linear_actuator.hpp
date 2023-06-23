@@ -14,14 +14,13 @@ la classe Linear_actuator hérite de la classe AccelStepper avec quelques foncti
 #define BELT_PITCH 2             // mm par dent de la courroie (dépend de la courroie)
 #define POULLEY_TEETH 25         // dents par poullie (dépend de la poullie)
 #define STEPS_PER_REVOLUTION 200 // nombre de pas entier par tour (dépend du moteur)
-#define MAX_POSITION 275         // mm (dépend de la longueur de la course)
-const unsigned long CALIBRATION_MAX_TRAVEL = int(1.05*MAX_POSITION); 
+#define CALIBRATION_MAX_TRAVEL_PERCENT 1.10 // pourcentage de la course maximale à parcourir pour la calibration
 
 class Linear_actuator
 {
 public:
     Linear_actuator(){};
-    Linear_actuator(int dir_pin, int step_pin, int end_stop_pin);
+    Linear_actuator(int dir_pin, int step_pin, int end_stop_pin, float max_position);
     ~Linear_actuator(){};
     void calibrate(); // when we want to check for a new falling edge
     void breakCalibration(){_calibrating = false;}
@@ -43,6 +42,7 @@ public:
     void runToNewPosition(float position_mm) { stepper.runToNewPosition(position_mm * STEP_PER_MM);}
     void setPinsInverted(bool direction, bool step, bool enable = false) { stepper.setPinsInverted(direction, step, enable);}
     void stop(){ stepper.stop();}
+    float getMaxPos(){return _max_position;}
 
 
     
@@ -51,6 +51,7 @@ private:
     static constexpr float STEP_PER_MM = (float)STEPS_PER_REVOLUTION * MICROSTEP / BELT_PITCH / POULLEY_TEETH,CALIBRATION_SPEED = 100.0;
     int _end_stop_pin;
     bool _calibrating = false,_calibrated = false;
+    float _max_position, _calibration_max_travel;
 };
 
 #endif

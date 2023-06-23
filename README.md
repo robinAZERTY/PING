@@ -26,3 +26,11 @@ Ce projet vise à contrôler les différents composants du plateau de jeu, y com
 3.  La détection de la présence de la balle dans les buts doit être configurée pour signaler un but lorsqu'elle est déclenchée.
 4.  Les solénoïdes linéaires doivent être activés au bon moment pour frapper la balle.
 5.  Le déroulement du jeu, le comptage des points et l'arrêt de la partie lorsque nécessaire doivent être gérés par le code.
+
+
+### v0.32
+
+- simplification des fonctions de detection de presence de la balle dans les buts (correction des bugs)
+- convention/protocole de communication UART entre les 2 ESP32
+- possibliité de gerer les joueurs actifs et inactifs via l'envoi de messages sur le UART
+- distance max des axes modifiable pour chaque joueur

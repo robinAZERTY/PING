@@ -2,10 +2,10 @@
 
 PING::PING()
 {
-    player1 = Player(DIR_PIN_1, INVERTED_DIR_PIN_1, STEP_PIN_1, END_STOP_PIN_1, SOLEOID_PIN_1, PHOTODIOD_PIN_1);
-    player2 = Player(DIR_PIN_2, INVERTED_DIR_PIN_2, STEP_PIN_2, END_STOP_PIN_2, SOLEOID_PIN_2, PHOTODIOD_PIN_2);
-    player3 = Player(DIR_PIN_3, INVERTED_DIR_PIN_3, STEP_PIN_3, END_STOP_PIN_3, SOLEOID_PIN_3, PHOTODIOD_PIN_3);
-    player4 = Player(DIR_PIN_4, INVERTED_DIR_PIN_4, STEP_PIN_4, END_STOP_PIN_4, SOLEOID_PIN_4, PHOTODIOD_PIN_4);
+    player1 = Player(DIR_PIN_1, INVERTED_DIR_PIN_1, STEP_PIN_1, END_STOP_PIN_1, SOLEOID_PIN_1, PHOTODIOD_PIN_1, MAX_POS_1);
+    player2 = Player(DIR_PIN_2, INVERTED_DIR_PIN_2, STEP_PIN_2, END_STOP_PIN_2, SOLEOID_PIN_2, PHOTODIOD_PIN_2, MAX_POS_2);
+    player3 = Player(DIR_PIN_3, INVERTED_DIR_PIN_3, STEP_PIN_3, END_STOP_PIN_3, SOLEOID_PIN_3, PHOTODIOD_PIN_3, MAX_POS_3);
+    player4 = Player(DIR_PIN_4, INVERTED_DIR_PIN_4, STEP_PIN_4, END_STOP_PIN_4, SOLEOID_PIN_4, PHOTODIOD_PIN_4, MAX_POS_4);
 }
 
 void PING::init()
@@ -30,9 +30,18 @@ bool PING::checkIsBallIn()
     return condition;
 }
 
-bool PING::isBallInStateChange()
+int PING::isBallInStateChange()
 {
-    return player1.isBallInStateChange() || player2.isBallInStateChange() || player3.isBallInStateChange() || player4.isBallInStateChange();
+    if(player1.isBallInStateChange())
+        return 1;
+    if(player2.isBallInStateChange())
+        return 2;
+    if(player3.isBallInStateChange())
+        return 3;   
+    if(player4.isBallInStateChange())
+        return 4;
+    
+    return 0;
 }
 
 uint8_t PING::getPlayerIdWichHasTheBallIn()
@@ -73,7 +82,11 @@ Player *PING::getPlayer(uint8_t id)
 
 bool PING::waittingForThrowIn()
 {
-    return player1.isWaittingForThrowIn() || player2.isWaittingForThrowIn() || player3.isWaittingForThrowIn() || player4.isWaittingForThrowIn();
+    bool p1 = player1.isWaittingForThrowIn();
+    bool p2 = player2.isWaittingForThrowIn();
+    bool p3 = player3.isWaittingForThrowIn();
+    bool p4 = player4.isWaittingForThrowIn();
+    return p1 || p2 || p3 || p4;
 }
 
 void PING::waitForThrowIn()
