@@ -1,6 +1,6 @@
 #include "webConnection.hpp"
 
-#define DEBUG true
+#define DEBUG false
 
 int MyWebServer::initGamePage()
 {

@@ -15,6 +15,12 @@ function initGamePage() {
     initGoalTakenSSE();
     initEndSSE();
 }
+var source = new EventSource("/getGoalTaken_SSE");
+
+function endGamePage() {
+    // on ferme les SSE
+    source.close();
+}
 
 function getLivesRequest() {
     
@@ -160,8 +166,6 @@ function sendDatas(data)
 
 function initGoalTakenSSE()
 {
-    //create a new EventSource
-    let source = new EventSource("/getGoalTaken_SSE");
 
     //on message received
     source.onmessage = function (event) {

@@ -1,9 +1,18 @@
 const DEBUG = true;
 
+var source = new EventSource("/getConnectedPlayerSSE");
+
 function initPlayerChoiceHTML()
 {
     getConnectedPlayer();
     getConnectedPlayerSSE();
+}
+
+function endPlayerChoice()
+{
+    // on ferme les SSE
+    
+    source.close();
 }
 
 //
@@ -20,7 +29,6 @@ function getConnectedPlayer()
 
 function getConnectedPlayerSSE()
 {
-    var source = new EventSource("/getConnectedPlayerSSE");
     source.onmessage = function (event) {
         if (DEBUG) console.log("ConnectedPlayerSSE: " + event.data);
         refreshPlayerDisplay(event.data);

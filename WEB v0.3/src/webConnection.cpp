@@ -1,6 +1,6 @@
 #include "webConnection.hpp"
 
-#define DEBUG true
+#define DEBUG false
 
 MyWebServer::MyWebServer()
 {
@@ -33,11 +33,14 @@ int MyWebServer::beginServer()
     while (file)
     {
         // register the path of the file in the list (adding a  '/' at the beginning)
-        pathList = (char **)realloc(pathList, (nbPath + 1) * sizeof(char *));
-        pathList[nbPath] = (char *)malloc((strlen(file.name()) + 1) * sizeof(char));
-        strcpy(pathList[nbPath], file.name());
+        // pathList = (char **)realloc(pathList, (nbPath + 1) * sizeof(char *));
+        // pathList[nbPath] = (char *)malloc((strlen(file.name()) + 2) * sizeof(char));
+        // pathList[nbPath][0] = '/';
+        // strcpy(pathList[nbPath] + 1, file.name());
 
-        nbPath++;
+        // nbPath++;
+        // file.close();
+        // file = root.openNextFile();
         file.close();
         file = root.openNextFile();
     }
@@ -106,6 +109,9 @@ int MyWebServer::linkFile(const char *url, const char *path, const char *content
 
     String strPath = String(path);
     String strContentType = String(contentType);
+    if(DEBUG)
+        Serial.println("Linking file: '" + strPath + "' with content type: '" + strContentType+"'"+ " and url: '"+String(url)+"'");
+
     server->on(url, HTTP_GET, [strPath, strContentType, url](AsyncWebServerRequest *request)
                {
                     if (DEBUG)
@@ -118,10 +124,92 @@ int MyWebServer::linkFile(const char *url, const char *path, const char *content
 
 int MyWebServer::linkFiles()
 {
-    for (uint i = 0; i < nbPath; i++)
-    {
-        linkFile(pathList[i], pathList[i], getContentType(pathList[i]).c_str());
-    }
+    // for (uint i = 0; i < nbPath; i++)
+    // {
+    //     linkFile(pathList[i], pathList[i], getContentType(pathList[i]).c_str());
+    // }
+    // return 0;
+
+    server->on("/index.html", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/index.html", "text/html"); });
+    server->on("/index.js", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/index.js", "text/javascript"); });
+
+    server->on("/playerChoice.html", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/playerChoice.html", "text/html"); });    
+    server->on("/playerChoice.js", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/playerChoice.js", "text/javascript"); });
+
+    server->on("/waiting_page.html", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/waiting_page.html", "text/html"); });
+    server->on("/waiting_page.js", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/waiting_page.js", "text/javascript"); });
+
+    server->on("/start.html", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/start.html", "text/html"); });
+    server->on("/start.js", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/start.js", "text/javascript"); });
+
+    server->on("/game_page.html", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/game_page.html", "text/html"); });
+    server->on("/game_page.js", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/game_page.js", "text/javascript"); });
+
+    server->on("/story.html", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/story.html", "text/html"); });
+
+    server->on("/score.html", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/score.html", "text/html"); });
+
+    server->on("/rules.html", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/rules.html", "text/html"); });    
+
+    server->on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/style.css", "text/css"); });
+               
+    //--------------------------------------------Images--------------------------------------------------------
+
+    server->on("/robin.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/robin.png", "image/png"); });
+
+    server->on("/baptiste1.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/baptiste1.png", "image/png"); });
+
+    server->on("/baptiste2.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/baptiste2.png", "image/png"); });
+
+    server->on("/LOGO.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/LOGO.png", "image/png"); });
+
+    server->on("/simon.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/simon.png", "image/png"); });
+
+    server->on("/franck.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/franck.png", "image/png"); });
+
+    server->on("/thomas.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/thomas.png", "image/png"); });
+
+    server->on("/coeur.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/coeur.png", "image/png"); });
+               
+    server->on("/trophee.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/trophee.png", "image/png"); });
+
+    server->on("/medaille-dargent.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/medaille-dargent.png", "image/png"); });
+
+    server->on("/medaille-de-bronze.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/medaille-de-bronze.png", "image/png"); });
+
+    server->on("/merde.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/merde.png", "image/png"); });
+
+    server->on("/setting.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/setting.png", "image/png"); });
+
+    server->on("/wifi.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/wifi.png", "image/png"); });
     return 0;
 }
 
@@ -199,7 +287,7 @@ void MyWebServer::receiveFromSerial(HardwareSerial &serial)
     else if (id == 3)
         getLives_SSE_3->send(String(this->playerLives[3]).c_str());
     
-
+    
 
     // on regarde si le joueur est mort
     if (this->playerLives[id] == 0)

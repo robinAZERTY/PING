@@ -67,7 +67,7 @@ class MyWebServer
         const char *ssid = "PING";
         const char *password = "123456789";
         const uint maxLives=5;
-        bool connectedPlayer[4]={false,false,false,false},previousConnectedPlayer[4]={false,false,false,false};
+        bool connectedPlayer[4],previousConnectedPlayer[4];
         bool started=false,ended=false;
         uint8_t playerLives[4];
 
