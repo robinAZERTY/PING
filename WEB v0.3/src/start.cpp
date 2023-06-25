@@ -18,6 +18,8 @@ void MyWebServer::startGameRequest()
             
             //send to all connected player that the game has started
             gameStartedSSE->send("start",NULL,millis(),100);
+            //sand to the serial port that the game has started
+            toSendToSerial += ("/startGame?playerList=" + constructPlayerList()+"\n");
             request->send(200,"text/plain","ok");
         }
     );
