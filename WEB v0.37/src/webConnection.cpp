@@ -1,10 +1,17 @@
 #include "webConnection.hpp"
 
-#define DEBUG false
-
 MyWebServer::MyWebServer()
 {
     this->server = new AsyncWebServer(80);
+    SSE = new AsyncEventSource("/SSE");
+    SSE->onConnect([](AsyncEventSourceClient *client)
+                   {
+                       //on affiche d'ip du client
+                          if (DEBUG)
+                            Serial.println("Client connected to SSE("+client->client()->remoteIP().toString()+")");
+                   });
+
+    server->addHandler(SSE);
     this->connectedPlayer[0] = false;
     this->connectedPlayer[1] = false;
     this->connectedPlayer[2] = false;
@@ -73,6 +80,9 @@ int MyWebServer::beginServer()
 
     if (initGamePage() < 0)
         return -5;
+    
+    if (initGetLivesListRequest() < 0)
+        return -6;
 
     server->begin();
     return 0;
@@ -131,41 +141,63 @@ int MyWebServer::linkFiles()
     // return 0;
 
     server->on("/index.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/index.html", "text/html"); });
+               {request->send(SPIFFS, "/index.html", "text/html"); });
+
     server->on("/index.js", HTTP_GET, [](AsyncWebServerRequest *request)
                { request->send(SPIFFS, "/index.js", "text/javascript"); });
-
+    
     server->on("/playerChoice.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/playerChoice.html", "text/html"); });    
+               { request->send(SPIFFS, "/playerChoice.html", "text/html"); });
+
+    server->on("/game_page_infini.html", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/game_page_infini.html", "text/html"); });
+
+
     server->on("/playerChoice.js", HTTP_GET, [](AsyncWebServerRequest *request)
                { request->send(SPIFFS, "/playerChoice.js", "text/javascript"); });
-
+    
     server->on("/waiting_page.html", HTTP_GET, [](AsyncWebServerRequest *request)
                { request->send(SPIFFS, "/waiting_page.html", "text/html"); });
+
     server->on("/waiting_page.js", HTTP_GET, [](AsyncWebServerRequest *request)
                { request->send(SPIFFS, "/waiting_page.js", "text/javascript"); });
-
+    
     server->on("/start.html", HTTP_GET, [](AsyncWebServerRequest *request)
                { request->send(SPIFFS, "/start.html", "text/html"); });
+
     server->on("/start.js", HTTP_GET, [](AsyncWebServerRequest *request)
                { request->send(SPIFFS, "/start.js", "text/javascript"); });
-
-    server->on("/game_page.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/game_page.html", "text/html"); });
-    server->on("/game_page.js", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/game_page.js", "text/javascript"); });
 
     server->on("/story.html", HTTP_GET, [](AsyncWebServerRequest *request)
                { request->send(SPIFFS, "/story.html", "text/html"); });
 
+    server->on("/story.js", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/story.js", "text/javascript"); });
+
+    server->on("/rules.html", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/rules.html", "text/html"); });
+
+    server->on("/rules.js", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/rules.js", "text/javascript"); });
+
+    server->on("/game_page.html", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/game_page.html", "text/html"); });
+
+    server->on("/game_page.js", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/game_page.js", "text/javascript"); });
+    
     server->on("/score.html", HTTP_GET, [](AsyncWebServerRequest *request)
                { request->send(SPIFFS, "/score.html", "text/html"); });
 
-    server->on("/rules.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/rules.html", "text/html"); });    
+    server->on("/score.js", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/score.js", "text/javascript"); });
 
     server->on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request)
                { request->send(SPIFFS, "/style.css", "text/css"); });
+
+    server->on("/SSE.js", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/SSE.js", "text/javascript"); });
+
                
     //--------------------------------------------Images--------------------------------------------------------
 
@@ -210,6 +242,10 @@ int MyWebServer::linkFiles()
 
     server->on("/wifi.png", HTTP_GET, [](AsyncWebServerRequest *request)
                { request->send(SPIFFS, "/wifi.png", "image/png"); });
+   
+    server->on("/infini.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/infini.png", "image/png"); });
+
     return 0;
 }
 
@@ -236,6 +272,9 @@ int MyWebServer::dealWithMsg(String str) // on traite la le message reçu sur le
     if (url != "/goalTaken")
         return -1;
 
+        // de la forme 
+//goalTaken?playerId=2
+    
     // on verifie la présence de l'argument playerId
     String arg = str.substring(str.indexOf('?') + 1, str.indexOf('='));
     if (arg != "playerId")
@@ -273,26 +312,44 @@ void MyWebServer::receiveFromSerial(HardwareSerial &serial)
         return;
     }
     // si oui, on la traite
-    this->playerLives[id]--;
+    if(gameMode =="classic")
+        {
+            this->playerLives[id]--;
+        }
+    else if(gameMode =="infinite")
+        {
+            // do nothing
+        }
+    else
+    {
+        throw "Game mode not recognized";
+    } 
+    
     if(DEBUG)
         Serial.println("Player "+String(id)+" has "+String(this->playerLives[id])+" lives left");
-    getGoalTaken_SSE->send(String(id).c_str());
+    
+    String toSend = "/goalTaken?playerId=";//ex 
+//goalTaken?playerId=3
 
-    if (id == 0)
-        getLives_SSE_0->send(String(this->playerLives[0]).c_str());
-    else if (id == 1)
-        getLives_SSE_1->send(String(this->playerLives[1]).c_str());
-    else if (id == 2)
-        getLives_SSE_2->send(String(this->playerLives[2]).c_str());
-    else if (id == 3)
-        getLives_SSE_3->send(String(this->playerLives[3]).c_str());
-    
-    
+    toSend+=String(id);
+    SSE->send(toSend.c_str(),NULL,millis(),100);
 
     // on regarde si le joueur est mort
     if (this->playerLives[id] == 0)
     {
-        getEndGame_SSE->send("gameEnded");
+        SSE->send("/gameEnded",NULL,millis(),100);
+    }
+    else 
+    {
+        if (gameMode=="classic")
+        { 
+        //on envoit le nombre de vie restante
+        String toSend = "/remainingLives?playerId=";
+        toSend+=String(id);
+        toSend+="&lives=";
+        toSend+=String(this->playerLives[id]);
+        SSE->send(toSend.c_str(),NULL,millis(),100);
+        }
     }
     if (DEBUG)
         Serial.println("Request found: " + receivedFromSerial);

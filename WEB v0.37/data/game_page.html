@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Jeu</title>
+    <title>en jeu</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="LOGO.png">
+    <script src="SSE.js"></script>
     <script src ="game_page.js"></script>
 </head>
-<body onload="initGamePage()" class="game_page_body" onended="endGamePage()"> 
+<body onload="getLivesRequest()" class="game_page_body"> 
     <main>
-        <h1 class="t-jeu">Jouez !!!</h1>
+        <h1 class="t-jeu">Mode Classique</h1>
         <section id="vies">
         </section>
         <section class="jeu">

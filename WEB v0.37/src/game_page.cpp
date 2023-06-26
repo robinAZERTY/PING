@@ -1,14 +1,12 @@
 #include "webConnection.hpp"
 
-#define DEBUG false
-
 int MyWebServer::initGamePage()
 {
     initGetLivesRequest();
-    initGetLives_SSE();
+    // initGetLives_SSE();
     playerActionRequest();
-    initGoalTakenSSE();
-    initGetEndGameSSE();
+    // initGoalTakenSSE();
+    // initGetEndGameSSE();
     return 0;
 }
 
@@ -32,55 +30,55 @@ void MyWebServer::initGetLivesRequest()
     });
 }
 
-void MyWebServer::initGetLives_SSE()
-{
-    getLives_SSE_0 = new AsyncEventSource("/getLives_SSE_0");
-    initGetLives_spesific_SSE(*getLives_SSE_0);
-    getLives_SSE_1 = new AsyncEventSource("/getLives_SSE_1");
-    initGetLives_spesific_SSE(*getLives_SSE_1);
-    getLives_SSE_2 = new AsyncEventSource("/getLives_SSE_2");
-    initGetLives_spesific_SSE(*getLives_SSE_2);
-    getLives_SSE_3 = new AsyncEventSource("/getLives_SSE_3");
-    initGetLives_spesific_SSE(*getLives_SSE_3);
-}
+// void MyWebServer::initGetLives_SSE()
+// {
+//     getLives_SSE_0 = new AsyncEventSource("/getLives_SSE_0");
+//     initGetLives_spesific_SSE(*getLives_SSE_0);
+//     getLives_SSE_1 = new AsyncEventSource("/getLives_SSE_1");
+//     initGetLives_spesific_SSE(*getLives_SSE_1);
+//     getLives_SSE_2 = new AsyncEventSource("/getLives_SSE_2");
+//     initGetLives_spesific_SSE(*getLives_SSE_2);
+//     getLives_SSE_3 = new AsyncEventSource("/getLives_SSE_3");
+//     initGetLives_spesific_SSE(*getLives_SSE_3);
+// }
 
-void MyWebServer::initGetLives_spesific_SSE(AsyncEventSource &sse)
-{
-    sse.onConnect([](AsyncEventSourceClient *client)
-                  {
-                      if (DEBUG)
-                          Serial.println("Client connected to GetLives SSE");
-                      // Code à exécuter lorsque le client se connecte
-                  });
-    // Ajouter l'événement au serveur
-    server->addHandler(&sse);
-}
+// void MyWebServer::initGetLives_spesific_SSE(AsyncEventSource &sse)
+// {
+//     sse.onConnect([](AsyncEventSourceClient *client)
+//                   {
+//                       if (DEBUG)
+//                           Serial.println("Client connected to GetLives SSE");
+//                       // Code à exécuter lorsque le client se connecte
+//                   });
+//     // Ajouter l'événement au serveur
+//     server->addHandler(&sse);
+// }
 
-void MyWebServer::initGetEndGameSSE()
-{
-    getEndGame_SSE = new AsyncEventSource("/getEndGame_SSE");
-    getEndGame_SSE->onConnect([](AsyncEventSourceClient *client)
-                              {
-                                  if (DEBUG)
-                                      Serial.println("Client connected to getEndGameSSE");
-                                  // Code à exécuter lorsque le client se connecte
-                              });
-    // Ajouter l'événement au serveur
-    server->addHandler(getEndGame_SSE);
-}
+// void MyWebServer::initGetEndGameSSE()
+// {
+//     getEndGame_SSE = new AsyncEventSource("/getEndGame_SSE");
+//     getEndGame_SSE->onConnect([](AsyncEventSourceClient *client)
+//                               {
+//                                   if (DEBUG)
+//                                       Serial.println("Client connected to getEndGameSSE");
+//                                   // Code à exécuter lorsque le client se connecte
+//                               });
+//     // Ajouter l'événement au serveur
+//     server->addHandler(getEndGame_SSE);
+// }
 
-void MyWebServer::initGoalTakenSSE()
-{
-    getGoalTaken_SSE = new AsyncEventSource("/getGoalTaken_SSE");
-    getGoalTaken_SSE->onConnect([](AsyncEventSourceClient *client)
-                                {
-                                    if (DEBUG)
-                                        Serial.println("Client connected to goalTakenSSE");
-                                    // Code à exécuter lorsque le client se connecte
-                                });
-    // Ajouter l'événement au serveur
-    server->addHandler(getGoalTaken_SSE);
-}
+// void MyWebServer::initGoalTakenSSE()
+// {
+//     getGoalTaken_SSE = new AsyncEventSource("/getGoalTaken_SSE");
+//     getGoalTaken_SSE->onConnect([](AsyncEventSourceClient *client)
+//                                 {
+//                                     if (DEBUG)
+//                                         Serial.println("Client connected to goalTakenSSE");
+//                                     // Code à exécuter lorsque le client se connecte
+//                                 });
+//     // Ajouter l'événement au serveur
+//     server->addHandler(getGoalTaken_SSE);
+// }
 
 bool MyWebServer::isPlayerAction(String str)
 {
@@ -99,10 +97,10 @@ void MyWebServer::playerActionRequest()
             // String action = request->getParam("action")->value();
 
             if(!request->hasParam("playerId"))
-                request->send(200, "text/plain", "missing playerId arg");
+                request->send(400, "text/plain", "missing playerId arg");
             
             if(!request->hasParam("action"))
-                request->send(200, "text/plain", "missing action arg");
+                request->send(400, "text/plain", "missing action arg");
 
             long player = request->getParam("playerId")->value().toInt();
             String action = request->getParam("action")->value();

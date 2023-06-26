@@ -1,0 +1,3 @@
+function initIndex() {
+    localStorage.clear();
+}

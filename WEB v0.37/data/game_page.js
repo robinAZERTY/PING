@@ -1,5 +1,3 @@
-const DEBUG = false;
-
 const PLAYER_ACTION = {
     LEFT: "left",
     RIGHT: "right",
@@ -7,19 +5,6 @@ const PLAYER_ACTION = {
     PUNCH: "punch",
     STOP_PUNCH: "stop-punch",
     RESUME: "resume"
-}
-
-function initGamePage() {
-    getLivesRequest();
-    initGetLives_specific_SSE();
-    initGoalTakenSSE();
-    initEndSSE();
-}
-var source = new EventSource("/getGoalTaken_SSE");
-
-function endGamePage() {
-    // on ferme les SSE
-    source.close();
 }
 
 function getLivesRequest() {
@@ -31,19 +16,6 @@ function getLivesRequest() {
         refreshLivesDisplay(text);
     })
 
-}
-function initGetLives_specific_SSE() {
-    //get Player id from local storage
-    var player_id = localStorage.getItem("playerId");
-
-    //create a new EventSource
-    let source = new EventSource("/getLives_SSE_" + String(player_id));
-
-    //on message received
-    source.onmessage = function (event) {
-        if (DEBUG) console.log("getLives_SSE: " + event.data);
-        refreshLivesDisplay(event.data);
-    }
 }
 
 function refreshLivesDisplay(lives) {
@@ -164,23 +136,6 @@ function sendDatas(data)
     fetch(dataToSend);
 }
 
-function initGoalTakenSSE()
-{
-
-    //on message received
-    source.onmessage = function (event) {
-        if (DEBUG) console.log("getGoalTaken_SSE: " + event.data);
-       //get player id from the response
-        let playerId = event.data.toString();
-        // check if the player is the current player        
-        if (playerId == localStorage.getItem("playerId").toString()) 
-        {
-            // un but a été pris, on cache le bouton tirer et on affiche le bouton reprendre
-            document.getElementById("punchButton").style.display = "none";
-            document.getElementById("resumeButton").style.display = "inline-block";
-        }
-    }
-}
 
 function resume()
 {
@@ -196,18 +151,4 @@ function resume()
     sendDatas(data);
     document.getElementById("punchButton").style.display = "inline-block";
     document.getElementById("resumeButton").style.display = "none";
-}
-
-function initEndSSE()
-{
-    //create a new EventSource
-    let source = new EventSource("/getEndGame_SSE");
-
-    //on message received
-    source.onmessage = function (event) {
-        if (DEBUG) console.log("getEndGame_SSE: " + event.data);
-        if (event.data == "gameEnded") {
-            window.location.href = "/score.html";
-        }
-    }
 }

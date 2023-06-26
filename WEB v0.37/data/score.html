@@ -7,8 +7,11 @@
     <title>Score</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="LOGO.png">
+    <script src="SSE.js"></script>
+    <script src="score.js"></script>
+
 </head>
-<body class="score">
+<body class="score" onload="initScore()">
     <h1>Scores</h1>
     <div class="scoreboard">
         <article>
@@ -56,13 +59,9 @@
             </section>
         </article>
     </div>
-    <div class="btn-score">
-        <form action="attente.html">  
-            <button type="submit" class="button pc">Rejouer</button>  
-        </form>  
-        <form action="accueil.html">  
-            <button type="submit" class="button pc">Quitter</button>  
-        </form>  
+    <div class="btn-score"> 
+        <button type="submit" class="button pc" onclick="resetGame()">Rejouer</button>    
+        <button type="submit" class="button pc" onclick="quite()">Quitter</button>  
     </div>
     <div class="wrapper2">
 		<span></span>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="LOGO.png">
+    <script src="SSE.js"></script>
+    <script src="start.js"></script>
+</head>
+<body onload="initStartPage()"> 
+    <div class="background-button choix-joueurs" id="playerPresenceDiv">
+        <span class="btn un"></span>
+        <span class="btn deux"></span>
+        <span class="btn trois"></span> 
+        <span class="btn quatre"></span>
+    </div> 
+    <main class="main-start">
+        <h2>Veuillez attendre tous les joueurs pour démarrer le jeu !</h2>
+        <div class="start-page">
+            <button type="submit" class="start color" onclick='startGame("classic")'>Classique</button>
+            <button type="submit" class="start infinity" onclick='startGame("infinite")'>Infini</button>
+        </div>
+    </main>
+    <div class="wrapper1">
+		<span></span>
+		<span></span>
+    </div>
+</body>
+</html>

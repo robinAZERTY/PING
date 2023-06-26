@@ -1,10 +1,13 @@
 #ifndef WEB_CONNECTION_HPP
 #define WEB_CONNECTION_HPP
 
+#define DEBUG false
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <SPIFFS.h>
+#include "soc/rtc_wdt.h"
 
 //player actions
 #define LEFT String("left")
@@ -33,7 +36,6 @@ class MyWebServer
         const String getContentType(const String path);
         int linkFiles();
         int linkFile(const char *url, const char *path, const char *contentType);
-        
         int initIndex();
         int dealWithMsg(String str);
         int initPlayerChoice();
@@ -41,28 +43,18 @@ class MyWebServer
         int initStartGameRequest();
         void startGameRequest();
         void playerChoiceRequest();
-        void initConnectedPlayerSSE();
         void playerDisplayRequest();
-        void initGoalTakenSSE();
         int initGamePage();
         void initGetLivesRequest();
-        void initGetLives_SSE();
-        void initGetLives_spesific_SSE(AsyncEventSource &sse);
+        int initGetLivesListRequest();
         String constructPlayerList();
 
-        void waitingPage_SSE();
 
         void playerActionRequest();
         bool isPlayerAction(String str);
 
-        void initGetEndGameSSE();
-
         AsyncWebServer* server=NULL;
-        AsyncEventSource* connectedPlayerSSE=NULL;
-        AsyncEventSource *gameStartedSSE=NULL;
-        AsyncEventSource *getLives_SSE_0=NULL,*getLives_SSE_1=NULL,*getLives_SSE_2=NULL,* getLives_SSE_3=NULL;
-        AsyncEventSource *getGoalTaken_SSE=NULL;
-        AsyncEventSource *getEndGame_SSE=NULL;
+        AsyncEventSource *SSE=NULL;
         /* data */
         const char *ssid = "PING";
         const char *password = "123456789";
@@ -76,6 +68,7 @@ class MyWebServer
 
         char**pathList;
         uint nbPath=0;
+        String gameMode="classic";
 };
 
 #endif
