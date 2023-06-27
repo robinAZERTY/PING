@@ -6,7 +6,12 @@ const PLAYER_ACTION = {
     STOP_PUNCH: "stop-punch",
     RESUME: "resume"
 }
-
+function initGamePage() {
+    fetch("/redirectingAvailability?type=FREE");
+    
+    if(!document.body.classList.contains("infini"))
+        getLivesRequest();
+}
 function getLivesRequest() {
     
     fetch("/getLives?playerId=" + localStorage.getItem("playerId").toString()).then(function (response) {

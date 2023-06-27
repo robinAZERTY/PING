@@ -36,9 +36,9 @@ function decodeSSEResponse(event) {
         case "gameStarted":
             if (document.title === "en attente")
                 if(params.get("gameMode") === "classic")
-                    window.location.href = "/game_page.html";
+                redirect("/game_page.html");// window.location.href = "/game_page.html";
                 else if(params.get("gameMode") === "infinite")
-                    window.location.href = "/game_page_infini.html";
+                redirect("/game_page_infini.html");// window.location.href = "/game_page_infini.html";
             break;
         case "goalTaken":
             if (document.title === "en jeu" || document.title === "en jeu (infini)")
@@ -63,4 +63,22 @@ function decodeSSEResponse(event) {
     }
 }
 
-///goalTaken?playerId=0
+function redirect(page)
+{
+    //on envoie une requete au serveur pour lui demander combien de joueurs sont en cours de redirection
+    fetch("/redirectingAvailability?type=GET").then(function (response) {
+        return response.text();
+    }
+    ).then(function (text) {
+        if (text == "available")
+        {
+            if(DEBUG) console.log("redirecting to " + page);
+            window.location.href = page;
+        }
+        else if (text == "busy")
+        {
+            if(DEBUG) console.log("retry to redirecting to " + page + " in 200ms");
+            setTimeout(redirect, 200, page);
+        }
+    });
+}

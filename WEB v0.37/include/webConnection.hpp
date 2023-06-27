@@ -1,7 +1,7 @@
 #ifndef WEB_CONNECTION_HPP
 #define WEB_CONNECTION_HPP
 
-#define DEBUG false
+#define DEBUG true
 
 #include <Arduino.h>
 #include <WiFi.h>
@@ -47,6 +47,7 @@ class MyWebServer
         int initGamePage();
         void initGetLivesRequest();
         int initGetLivesListRequest();
+        int initGetRedirectingPlayerRequest();
         String constructPlayerList();
 
 
@@ -69,6 +70,8 @@ class MyWebServer
         char**pathList;
         uint nbPath=0;
         String gameMode="classic";
+
+        uint8_t redirectingPlayer=0;//pour eviter la surcharge du serveur
 };
 
 #endif

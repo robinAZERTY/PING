@@ -4,7 +4,7 @@ function initPlayerChoiceHTML()
 }
 
 
-//
+
 function getConnectedPlayer()
 {
     fetch("/getPlayerList").then(function (response) {
