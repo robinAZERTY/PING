@@ -125,6 +125,7 @@ void dealWithStartGame(String requestType, String entierRequest)
 #endif
     }
   }
+  the_ping.throwIn();
 }
 
 void receiveFromSerial()

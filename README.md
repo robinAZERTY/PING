@@ -34,3 +34,6 @@ Ce projet vise à contrôler les différents composants du plateau de jeu, y com
 - convention/protocole de communication UART entre les 2 ESP32
 - possibliité de gerer les joueurs actifs et inactifs via l'envoi de messages sur le UART
 - distance max des axes modifiable pour chaque joueur
+
+## v0.33
+- remise en jeu automatique de tous les joueurs lors du début de partie
