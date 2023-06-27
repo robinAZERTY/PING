@@ -246,6 +246,18 @@ int MyWebServer::linkFiles()
     server->on("/infini.png", HTTP_GET, [](AsyncWebServerRequest *request)
                { request->send(SPIFFS, "/infini.png", "image/png"); });
 
+    server->on("/logo_bleu.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/logo_bleu.png", "image/png"); });
+    
+    server->on("/logo_rouge.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/logo_rouge.png", "image/png"); });
+    
+    server->on("/logo_vert.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/logo_vert.png", "image/png"); });
+    
+    server->on("/logo_jaune.png", HTTP_GET, [](AsyncWebServerRequest *request)
+               { request->send(SPIFFS, "/logo_jaune.png", "image/png"); });
+
     return 0;
 }
 

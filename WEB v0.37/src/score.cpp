@@ -2,9 +2,14 @@
 
 int MyWebServer::initGetLivesListRequest()
 {
-    server->on("/getLiveList", HTTP_GET, [this](AsyncWebServerRequest *request)
+    server->on("/getScores", HTTP_GET, [this](AsyncWebServerRequest *request)
                {
-        String toSend = "";
+        String toSend = "connectedPlayers:";
+        for (int i=0; i<4; i++)
+        {
+            toSend +=(this->connectedPlayer[i] ? "1" : "0");
+        }
+        toSend += "&lives:";
         for (int i = 0; i < 4; i++)
         {
             toSend += String(this->playerLives[i]) + ",";
@@ -12,7 +17,7 @@ int MyWebServer::initGetLivesListRequest()
         //on remove la derniere ,
         toSend = toSend.substring(0, toSend.length() - 1);
         if (DEBUG)
-            Serial.println("LiveList request:" + request->url() + " response:" + toSend);
+            Serial.println("getScores request:" + request->url() + " response:" + toSend);
         request->send(200, "text/plain", toSend); });
 
     server->on("/resetGame", HTTP_GET, [this](AsyncWebServerRequest *request)

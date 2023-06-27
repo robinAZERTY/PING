@@ -60,8 +60,9 @@ Pour résoudre un problème de compilation spécifique à l'ESP Async WebServer,
 Une fois que vous avez installé et configuré le projet, vous pouvez commencer à l'utiliser en suivant ces étapes :
 
 1.  Assurez-vous que votre ESP32 est correctement connecté à l'alimentation.
-2.  Scannez le QR code généré par l'ESP32 à l'aide de votre téléphone ou d'un autre appareil.
-3.  Vous serez automatiquement redirigé vers la page d'accueil où vous pouvez choisir votre gardien parmi les options disponibles.
-4.  Suivez les instructions à l'écran pour jouer au jeu PONG à quatre joueurs.
+2.  Connectez-vous au wifi de l'ESP32 à l'aide du premier QR code.
+3.  Scannez le deuxième QR code présent sur l'un des coins du jeu à l'aide de votre téléphone ou d'un autre appareil.
+4.  Vous serez automatiquement redirigé vers la page d'accueil où vous pouvez choisir votre gardien parmi les options disponibles.
+5.  Suivez les instructions à l'écran pour jouer au jeu PONG à quatre joueurs.
 
 Profitez du jeu et amusez-vous bien !

@@ -381,7 +381,7 @@ path {
 }
 
 .reprendre {
-  width: 300px;
+  width: 345px;
   height: 120px;
   background-color: #FB5B3C;
   color: white;
@@ -401,7 +401,7 @@ path {
 }
 
 .infini .reprendre {
-  background: linear-gradient(45deg, rgba(60, 44, 84, 1) 0%, rgba(251, 91, 60, 1) 50%, rgba(60, 44, 84, 1) 100%);
+  background-color: #3C2C54;
 }
 
 .infini .left {
@@ -438,6 +438,8 @@ path {
   overflow: hidden;
   z-index: -1;
   opacity: 0.4;
+  pointer-events: none;
+  user-select: none;
 }
 
 .infini-img img {
@@ -769,7 +771,7 @@ path {
   flex-wrap: wrap;
   align-content: center;
   justify-content: center;
-  animation-duration: 5s;
+  animation-duration: 2s;
   animation-name: score;
 }
 
@@ -777,7 +779,7 @@ path {
   height: 55px;
   width: 300px;
   border: 0.5px solid #3C2C54;
-  margin: 20px;
+  margin: 30px;
   border-radius: 10px;
   background-color: white;
   display: flex;
@@ -791,15 +793,11 @@ path {
 
 .row {
   width: 230px;
-  margin-right: 10px;
+  display: flex;
+  justify-content: space-around;
+  
 }
 
-.forme {
-  width: 20px;
-  height: 20px;
-  margin-left: 50px;
-  margin-top: 20px;
-}
 
 .forme path {
   fill: rgba(0, 0, 0, 0.5);
@@ -817,17 +815,11 @@ path {
     opacity: 0;
   }
 
-  65% {
-    opacity: 0;
-  }
-
   100% {
     margin-top: auto;
     opacity: 1;
   }
 }
-
-
 
 .btn-score {
   display: flex;
@@ -838,6 +830,22 @@ path {
 
 .btn-score button {
   margin: 10px;
+}
+
+.logo-score {
+  width: 30px;
+  height: 30px;
+  margin-left: 25px;
+  margin-bottom: 12px;
+  margin-top: 12px;
+  border-radius: 7px;
+}
+
+.score-text {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
 }
 
 /* Attente */
@@ -904,7 +912,7 @@ li {
 
 .list img {
   height: 15px;
-  width: 5px;
+  width: 15px;
   filter: grayscale(100%);
 }
 
