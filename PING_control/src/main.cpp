@@ -23,7 +23,7 @@ PING the_ping;
 // for Serial writing
 #define CODE_GOAL "/goalTaken" // /goalTaken?playerId="id"
 
-#define DEBUG
+// #define DEBUG
 
 void dealWithPlayerAction(String requestType, String entierRequest)
 {
@@ -59,7 +59,7 @@ void dealWithPlayerAction(String requestType, String entierRequest)
   if (!player->isPlaying())
   {
 #ifdef DEBUG
-    Serial.println("error this player is not in playing");
+    Serial.println("error this player is not playing");
 #endif
     return;
   }
