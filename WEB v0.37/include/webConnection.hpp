@@ -1,7 +1,7 @@
 #ifndef WEB_CONNECTION_HPP
 #define WEB_CONNECTION_HPP
 
-#define DEBUG true
+#define DEBUG false
 
 #include <Arduino.h>
 #include <WiFi.h>
