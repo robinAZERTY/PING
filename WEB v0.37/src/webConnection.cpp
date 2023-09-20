@@ -29,11 +29,12 @@ MyWebServer::~MyWebServer()
 int MyWebServer::beginServer()
 {
 
+
     // load all document
-    if (!SPIFFS.begin())
+    if (!FLASH_TYPE.begin())
         return -1;
 
-    File root = SPIFFS.open("/");
+    File root = FLASH_TYPE.open("/");
     File file = root.openNextFile();
 
     while (file)
@@ -53,7 +54,7 @@ int MyWebServer::beginServer()
 
     if (DEBUG)
     {
-        Serial.println("Files in SPIFFS:");
+        Serial.println("Files in FLASH_TYPE:");
         for (uint i = 0; i < nbPath; i++)
         {
             Serial.println(pathList[i]);
@@ -129,7 +130,7 @@ int MyWebServer::linkFile(const char *url, const char *path, const char *content
                     if (DEBUG)
                         Serial.println("Linked file: '" + strPath + "' with content type: '" + String(strContentType)+"'"+ " and url: '"+String(url)+"'");
                     
-                    request->send(SPIFFS, String(strPath), String(strContentType)); });
+                    request->send(FLASH_TYPE, String(strPath), String(strContentType)); });
 
     return 0;
 }
@@ -143,120 +144,120 @@ int MyWebServer::linkFiles()
     // return 0;
 
     server->on("/index.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/index.html", "text/html"); });
+               { request->send(FLASH_TYPE, "/index.html", "text/html"); });
 
     server->on("/index.js", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/index.js", "text/javascript"); });
+               { request->send(FLASH_TYPE, "/index.js", "text/javascript"); });
 
     server->on("/playerChoice.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/playerChoice.html", "text/html"); });
+               { request->send(FLASH_TYPE, "/playerChoice.html", "text/html"); });
 
     server->on("/game_page_infini.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/game_page_infini.html", "text/html"); });
+               { request->send(FLASH_TYPE, "/game_page_infini.html", "text/html"); });
 
     server->on("/playerChoice.js", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/playerChoice.js", "text/javascript"); });
+               { request->send(FLASH_TYPE, "/playerChoice.js", "text/javascript"); });
 
     server->on("/waiting_page.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/waiting_page.html", "text/html"); });
+               { request->send(FLASH_TYPE, "/waiting_page.html", "text/html"); });
 
     server->on("/waiting_page.js", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/waiting_page.js", "text/javascript"); });
+               { request->send(FLASH_TYPE, "/waiting_page.js", "text/javascript"); });
 
     server->on("/start.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/start.html", "text/html"); });
+               { request->send(FLASH_TYPE, "/start.html", "text/html"); });
 
     server->on("/start.js", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/start.js", "text/javascript"); });
+               { request->send(FLASH_TYPE, "/start.js", "text/javascript"); });
 
     server->on("/story.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/story.html", "text/html"); });
+               { request->send(FLASH_TYPE, "/story.html", "text/html"); });
 
     server->on("/story.js", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/story.js", "text/javascript"); });
+               { request->send(FLASH_TYPE, "/story.js", "text/javascript"); });
 
     server->on("/rules.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/rules.html", "text/html"); });
+               { request->send(FLASH_TYPE, "/rules.html", "text/html"); });
 
     server->on("/rules.js", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/rules.js", "text/javascript"); });
+               { request->send(FLASH_TYPE, "/rules.js", "text/javascript"); });
 
     server->on("/game_page.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/game_page.html", "text/html"); });
+               { request->send(FLASH_TYPE, "/game_page.html", "text/html"); });
 
     server->on("/game_page.js", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/game_page.js", "text/javascript"); });
+               { request->send(FLASH_TYPE, "/game_page.js", "text/javascript"); });
 
     server->on("/score.html", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/score.html", "text/html"); });
+               { request->send(FLASH_TYPE, "/score.html", "text/html"); });
 
     server->on("/score.js", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/score.js", "text/javascript"); });
+               { request->send(FLASH_TYPE, "/score.js", "text/javascript"); });
 
     server->on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/style.css", "text/css"); });
+               { request->send(FLASH_TYPE, "/style.css", "text/css"); });
 
     server->on("/SSE.js", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/SSE.js", "text/javascript"); });
+               { request->send(FLASH_TYPE, "/SSE.js", "text/javascript"); });
 
     //--------------------------------------------Images--------------------------------------------------------
 
     server->on("/robin.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/robin.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/robin.png", "image/png"); });
 
     server->on("/baptiste1.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/baptiste1.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/baptiste1.png", "image/png"); });
 
     server->on("/baptiste2.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/baptiste2.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/baptiste2.png", "image/png"); });
 
     server->on("/LOGO.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/LOGO.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/LOGO.png", "image/png"); });
 
     server->on("/simon.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/simon.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/simon.png", "image/png"); });
 
     server->on("/franck.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/franck.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/franck.png", "image/png"); });
 
     server->on("/thomas.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/thomas.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/thomas.png", "image/png"); });
 
     server->on("/coeur.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/coeur.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/coeur.png", "image/png"); });
 
     server->on("/trophee.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/trophee.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/trophee.png", "image/png"); });
 
     server->on("/medaille-dargent.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/medaille-dargent.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/medaille-dargent.png", "image/png"); });
 
     server->on("/medaille-de-bronze.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/medaille-de-bronze.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/medaille-de-bronze.png", "image/png"); });
 
     server->on("/merde.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/merde.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/merde.png", "image/png"); });
 
     server->on("/setting.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/setting.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/setting.png", "image/png"); });
 
     server->on("/wifi.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/wifi.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/wifi.png", "image/png"); });
 
     server->on("/infini.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/infini.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/infini.png", "image/png"); });
 
     server->on("/logo_bleu.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/logo_bleu.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/logo_bleu.png", "image/png"); });
 
     server->on("/logo_rouge.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/logo_rouge.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/logo_rouge.png", "image/png"); });
 
     server->on("/logo_vert.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/logo_vert.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/logo_vert.png", "image/png"); });
 
     server->on("/logo_jaune.png", HTTP_GET, [](AsyncWebServerRequest *request)
-               { request->send(SPIFFS, "/logo_jaune.png", "image/png"); });
+               { request->send(FLASH_TYPE, "/logo_jaune.png", "image/png"); });
 
     return 0;
 }
@@ -379,7 +380,7 @@ int MyWebServer::initGetRedirectingPlayerRequest()
             AsyncWebParameter *p = request->getParam("type");
             if (p->value() == "GET")
             {
-                if (redirectingPlayer < 2)
+                if (redirectingPlayer < MAX_SIMULTANEOUS_REDIRECTION)
                 {
                     if (DEBUG) Serial.println("new redirecting");
                     redirectingPlayer++;

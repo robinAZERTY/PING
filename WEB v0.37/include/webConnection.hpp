@@ -3,10 +3,19 @@
 
 #define DEBUG false
 
+#define useLittleFS 
+
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
+#ifndef useLittleFS
 #include <SPIFFS.h>
+#define FLASH_TYPE  SPIFFS
+#else
+#include <LittleFS.h>
+#define FLASH_TYPE  LittleFS
+#endif
 #include "soc/rtc_wdt.h"
 
 //player actions
@@ -20,6 +29,8 @@
 //request type
 #define PLAYER_ACTION_REQUEST "/playerAction"
 #define GET_LIVES_REQUEST "/getLives"
+
+#define MAX_SIMULTANEOUS_REDIRECTION 1
 
 
 class MyWebServer
