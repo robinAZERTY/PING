@@ -1,5 +1,6 @@
 # PING - Jeu de plateau interactif
-**generé par chatGPT**
+
+**Repo obsolète, une deuxième version du jeu est en cours de développement sur [https://github.com/2PING2/PING2](https://github.com/2PING2/PING2)**
 
 Ce projet est un jeu de plateau interactif appelé PING, conçu pour être joué entre 1 et 4 joueurs. Le jeu est similaire au jeu Pong, mais avec la particularité d'avoir 4 joueurs et de se jouer en présentiel.
 
@@ -32,12 +33,8 @@ Le projet utilise PlatformIO sous VSCode comme environnement de développement. 
 
 Avant de pouvoir exécuter le jeu, assurez-vous d'avoir correctement configuré les deux ESP32 pour la communication UART et la connexion Wi-Fi. Reportez-vous aux README.md des branches "web" et "contrôle" pour obtenir des informations détaillées sur la configuration de chaque branche.
 
-## Contributions
-
-Les contributions à ce projet sont les bienvenues. Si vous souhaitez apporter des améliorations, corriger des bugs ou ajouter de nouvelles fonctionnalités, n'hésitez pas à ouvrir une pull request. Veuillez inclure une description claire des modifications apportées et assurez-vous de tester votre code avant de proposer des modifications.
-
 ## Auteurs
 
-Ce projet a été développé par \[votre nom/organisation\]. Pour toute question ou demande de renseignements supplémentaires, veuillez nous contacter à \[adresse e-mail de contact\].
+Ce projet a été développé par robin, simon, thomas et franck.
 
 Nous espérons que vous apprécierez jouer à PING !
